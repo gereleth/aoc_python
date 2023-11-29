@@ -1,0 +1,11 @@
+.pytest_cache
+.ruff_cache
+.vscode
+
+__pycache__
+venv
+env.sh
+
+
+# input data loaded by advent-of-code-data
+data
