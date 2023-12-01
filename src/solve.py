@@ -25,7 +25,10 @@ def init_argparse() -> argparse.ArgumentParser:
 
 
 def run_day(year, day, input_path=None):
-    solution = import_module(f"year{year}.day{day:02d}")
+    try:
+        solution = import_module(f"year{year}.day{day:02d}")
+    except ModuleNotFoundError:
+        return "?", (0, 0)
     print(f"--- Year {year} Day {day}: {solution.day_title} ---")
     if input_path is None:
         content = get_data(year=year, day=day, block=True)
