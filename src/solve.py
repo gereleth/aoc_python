@@ -28,7 +28,7 @@ def run_day(year, day, input_path=None):
     solution = import_module(f"year{year}.day{day:02d}")
     print(f"--- Year {year} Day {day}: {solution.day_title} ---")
     if input_path is None:
-        content = get_data(year=year, day=day)
+        content = get_data(year=year, day=day, block=True)
     else:
         with open(input_path, "r") as f:
             content = f.read().rstrip()
