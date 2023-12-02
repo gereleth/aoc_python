@@ -1,13 +1,11 @@
 # Problem statement: https://adventofcode.com/2023/day/2
 
-from math import ceil
 import sys
 import pygame as pg
 from aocd import get_data
 import time
 import re
 from functools import lru_cache
-from collections import namedtuple
 from dataclasses import dataclass
 
 SILVER = (153, 153, 204)
