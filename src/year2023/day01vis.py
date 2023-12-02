@@ -138,12 +138,12 @@ def run():
     result2 = 0
 
     t0 = time.perf_counter()
-    while True:
+    running = True
+    while running:
         clock.tick(FPS)
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                pg.quit()
-                sys.exit()
+                running = False
 
         # erase everything
         screen.fill(BACKGROUND)
@@ -205,12 +205,17 @@ def run():
         )
 
         # scroll down
-        if idx < len(lines) and time.perf_counter() - t0 > 2:
+        if (
+            idx < len(lines) and time.perf_counter() - t0 > 2
+        ):  # the delay is so I can launch obs recording =D
             h += scroll_speed
             scroll_speed = min(1 + idx // 10, 50)
 
         # actually update the screen now
         pg.display.flip()
+
+    pg.quit()
+    sys.exit(0)
 
 
 if __name__ == "__main__":
