@@ -66,9 +66,13 @@ python src/yearY/dayXvis.py
             <h3><a href="src/year2023/day01vis.py">Day 1</a></h3>
             <a href="outputs/2023-day01-trebuchet.png"><img src="outputs/2023-day01-trebuchet.png" height="200"></a>
         </td>
-        <td>
+        <td>            
+            <h3><a href="src/year2023/day02vis.py">Day 2</a></h3>
+            <a href="outputs/2023-day02-cube-conundrum.png"><img src="outputs/2023-day02-cube-conundrum.png" height="200"></a>
         </td>
         <td>
+            <h3><a href="src/year2023/day03vis.py">Day 3</a></h3>
+            <a href="outputs/2023-day03-gear-ratios.png"><img src="outputs/2023-day03-gear-ratios.png" height="200"></a>
         </td>
     </tr>
 </table>
