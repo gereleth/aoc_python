@@ -1,4 +1,4 @@
-# Problem statement: https://adventofcode.com/2023/day/2
+# Problem statement: https://adventofcode.com/2023/day/3
 # This feels so clumsy but hey it works.
 
 import re
