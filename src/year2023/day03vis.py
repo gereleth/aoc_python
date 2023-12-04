@@ -23,13 +23,6 @@ INITIAL_DELAY = 2
 TIME_PER_TURN = 0.2
 GOLD_DELAY = 15  # turns
 
-# Get sizes from input data
-text_input = get_data(year=2023, day=3)
-lines = text_input.split("\n")
-NUM_LINES = len(lines)
-NUM_CHARS = len(lines[0])
-print(NUM_LINES, "lines,", NUM_CHARS, "chars")
-
 
 @dataclass
 class Span:
@@ -127,134 +120,148 @@ def annotate(text_input):
     return annotated_lines
 
 
-annotated_lines = annotate(text_input)
+def run():
+    # Get sizes from input data
+    text_input = get_data(year=2023, day=3)
+    lines = text_input.split("\n")
+    NUM_LINES = len(lines)
+    NUM_CHARS = len(lines[0])
+    print(NUM_LINES, "lines,", NUM_CHARS, "chars")
 
-pg.init()
-screen = pg.display.set_mode([WIDTH, HEIGHT])
-pg.display.set_caption("Advent of Code 2023 - Day 3 - Gear Ratios")
-font = pg.font.SysFont("monospace", 14)
-symbol = font.render(".", 1, TEXT_COLOR)
-symbol_rect = symbol.get_rect()
-PADDING = (WIDTH - NUM_CHARS * symbol_rect.width) // 2
-if PADDING < 0:
-    raise ValueError("Use a smaller font size so whole lines fit the screen")
+    annotated_lines = annotate(text_input)
 
-clock = pg.time.Clock()
+    pg.init()
+    screen = pg.display.set_mode([WIDTH, HEIGHT])
+    pg.display.set_caption("Advent of Code 2023 - Day 3 - Gear Ratios")
+    font = pg.font.SysFont("monospace", 14)
+    symbol = font.render(".", 1, TEXT_COLOR)
+    symbol_rect = symbol.get_rect()
+    PADDING = (WIDTH - NUM_CHARS * symbol_rect.width) // 2
+    if PADDING < 0:
+        raise ValueError("Use a smaller font size so whole lines fit the screen")
 
-t0 = time.perf_counter()
-running = True
+    clock = pg.time.Clock()
 
-while running:
-    clock.tick(FPS)
+    t0 = time.perf_counter()
+    running = True
 
-    t = time.perf_counter() - t0
-    silver_lines = min(len(lines) + 1, int(max(0, t - INITIAL_DELAY) / TIME_PER_TURN))
-    gold_lines = min(
-        len(lines) + 1,
-        int(max(0, t - INITIAL_DELAY - TIME_PER_TURN * GOLD_DELAY) / TIME_PER_TURN),
-    )
-    dt = max(0, t - INITIAL_DELAY - silver_lines * TIME_PER_TURN)
+    while running:
+        clock.tick(FPS)
 
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            running = False
-        if event.type == pg.MOUSEBUTTONDOWN:
-            t0 = time.perf_counter()
+        t = time.perf_counter() - t0
+        silver_lines = min(
+            len(lines) + 1, int(max(0, t - INITIAL_DELAY) / TIME_PER_TURN)
+        )
+        gold_lines = min(
+            len(lines) + 1,
+            int(max(0, t - INITIAL_DELAY - TIME_PER_TURN * GOLD_DELAY) / TIME_PER_TURN),
+        )
+        dt = max(0, t - INITIAL_DELAY - silver_lines * TIME_PER_TURN)
 
-    # erase everything
-    screen.fill(BACKGROUND)
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                running = False
+            if event.type == pg.MOUSEBUTTONDOWN:
+                t0 = time.perf_counter()
 
-    scrolled = min(
-        max(0, silver_lines - 30) * symbol_rect.height,
-        (len(lines)) * symbol_rect.height - HEIGHT + PADDING + 100,
-    )
-    # dh = min(len(lines), max(0, silver_lines - 30)) * symbol_rect.height
-    dh = 0
-    if (
-        scrolled > 0
-        and scrolled < (len(lines)) * symbol_rect.height - HEIGHT + PADDING + 100
-    ):
-        dh = -(dt / TIME_PER_TURN) * symbol_rect.height
+        # erase everything
+        screen.fill(BACKGROUND)
 
-    total_1 = 0
-    total_2 = 0
+        scrolled = min(
+            max(0, silver_lines - 30) * symbol_rect.height,
+            (len(lines)) * symbol_rect.height - HEIGHT + PADDING + 100,
+        )
+        # dh = min(len(lines), max(0, silver_lines - 30)) * symbol_rect.height
+        dh = 0
+        if (
+            scrolled > 0
+            and scrolled < (len(lines)) * symbol_rect.height - HEIGHT + PADDING + 100
+        ):
+            dh = -(dt / TIME_PER_TURN) * symbol_rect.height
 
-    for i, line in enumerate(annotated_lines):
-        if i < gold_lines:
-            # show annotated for part 2
-            for s, span in enumerate(line):
-                total_2 += span.gear_ratio
-                if span.is_part_number:
-                    total_1 += int(span.text)
-                color = TEXT_COLOR
-                background = BACKGROUND
-                if span.is_gear or span.is_gear_ratio:
-                    color = GOLD
-                    background = BACKGROUND_2
+        total_1 = 0
+        total_2 = 0
 
-                alpha = 255
-                if (
-                    span.is_dots
-                    or (span.is_num and not span.is_gear_ratio)
-                    or (span.is_symbol and not span.is_gear)
-                ):
-                    alpha = 128
+        for i, line in enumerate(annotated_lines):
+            if i < gold_lines:
+                # show annotated for part 2
+                for s, span in enumerate(line):
+                    total_2 += span.gear_ratio
+                    if span.is_part_number:
+                        total_1 += int(span.text)
+                    color = TEXT_COLOR
+                    background = BACKGROUND
+                    if span.is_gear or span.is_gear_ratio:
+                        color = GOLD
+                        background = BACKGROUND_2
 
-                text = font.render(span.text, 1, color, background)
-                text.set_alpha(alpha)
+                    alpha = 255
+                    if (
+                        span.is_dots
+                        or (span.is_num and not span.is_gear_ratio)
+                        or (span.is_symbol and not span.is_gear)
+                    ):
+                        alpha = 128
+
+                    text = font.render(span.text, 1, color, background)
+                    text.set_alpha(alpha)
+                    rect = text.get_rect(
+                        left=PADDING + span.start * symbol_rect.width,
+                        top=PADDING - scrolled + dh + i * symbol_rect.height,
+                    )
+                    screen.blit(text, rect)
+            elif i < silver_lines:
+                # show annotated for part 1
+                for s, span in enumerate(line):
+                    color = TEXT_COLOR
+                    background = BACKGROUND
+                    if span.is_part_number or span.is_symbol:
+                        color = SILVER
+                        background = BACKGROUND_2
+                    if span.is_part_number:
+                        total_1 += int(span.text)
+
+                    alpha = 255
+                    if span.is_dots or (span.is_num and not span.is_part_number):
+                        alpha = 128
+
+                    text = font.render(span.text, 1, color, background)
+                    text.set_alpha(alpha)
+                    rect = text.get_rect(
+                        left=PADDING + span.start * symbol_rect.width,
+                        top=PADDING - scrolled + dh + i * symbol_rect.height,
+                    )
+                    screen.blit(text, rect)
+            else:
+                # show raw line
+                text = font.render(lines[i], 1, TEXT_COLOR)
                 rect = text.get_rect(
-                    left=PADDING + span.start * symbol_rect.width,
+                    left=PADDING,
                     top=PADDING - scrolled + dh + i * symbol_rect.height,
                 )
                 screen.blit(text, rect)
-        elif i < silver_lines:
-            # show annotated for part 1
-            for s, span in enumerate(line):
-                color = TEXT_COLOR
-                background = BACKGROUND
-                if span.is_part_number or span.is_symbol:
-                    color = SILVER
-                    background = BACKGROUND_2
-                if span.is_part_number:
-                    total_1 += int(span.text)
 
-                alpha = 255
-                if span.is_dots or (span.is_num and not span.is_part_number):
-                    alpha = 128
+        # render totals
+        text = font.render("> " + str(total_1), 1, SILVER, BACKGROUND_2)
+        rect = text.get_rect(
+            left=PADDING + NUM_CHARS * symbol_rect.width,
+            top=PADDING - scrolled + silver_lines * symbol_rect.height,
+        )
+        screen.blit(text, rect)
 
-                text = font.render(span.text, 1, color, background)
-                text.set_alpha(alpha)
-                rect = text.get_rect(
-                    left=PADDING + span.start * symbol_rect.width,
-                    top=PADDING - scrolled + dh + i * symbol_rect.height,
-                )
-                screen.blit(text, rect)
-        else:
-            # show raw line
-            text = font.render(lines[i], 1, TEXT_COLOR)
-            rect = text.get_rect(
-                left=PADDING,
-                top=PADDING - scrolled + dh + i * symbol_rect.height,
-            )
-            screen.blit(text, rect)
+        text = font.render("> " + str(total_2), 1, GOLD, BACKGROUND_2)
+        rect = text.get_rect(
+            left=PADDING + NUM_CHARS * symbol_rect.width,
+            top=PADDING - scrolled + (gold_lines - 1) * symbol_rect.height,
+        )
+        screen.blit(text, rect)
 
-    # render totals
-    text = font.render("> " + str(total_1), 1, SILVER, BACKGROUND_2)
-    rect = text.get_rect(
-        left=PADDING + NUM_CHARS * symbol_rect.width,
-        top=PADDING - scrolled + silver_lines * symbol_rect.height,
-    )
-    screen.blit(text, rect)
+        # actually update the screen now
+        pg.display.flip()
 
-    text = font.render("> " + str(total_2), 1, GOLD, BACKGROUND_2)
-    rect = text.get_rect(
-        left=PADDING + NUM_CHARS * symbol_rect.width,
-        top=PADDING - scrolled + (gold_lines - 1) * symbol_rect.height,
-    )
-    screen.blit(text, rect)
+    pg.quit()
+    sys.exit()
 
-    # actually update the screen now
-    pg.display.flip()
 
-pg.quit()
-sys.exit()
+if __name__ == "__main__":
+    run()
