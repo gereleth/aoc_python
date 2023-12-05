@@ -55,7 +55,7 @@ Some days include code to produce animations illustrating the solution.
 You can see them by running
 
 ```bash
-python src/yearY/dayXvis.py
+python src/vis.py --year {year} --day {day}
 ```
 
 ### 2023
@@ -82,7 +82,9 @@ Animations made with pygame.
             <h4><a href="src/year2023/day04vis.py">Day 4</a></h4>
             <a href="outputs/2023-day04-scratchcards.png"><img src="outputs/2023-day04-scratchcards.png" height="200"></a>
         </td>
-        <td>            
+        <td>        
+            <h4><a href="src/year2023/day05vis.py">Day 5</a></h4>
+            <a href="outputs/2023-day05-if-you-give-a-seed-a-fertilizer.png"><img src="outputs/2023-day05-if-you-give-a-seed-a-fertilizer.png" height="200"></a>    
         </td>
         <td>
         </td>
