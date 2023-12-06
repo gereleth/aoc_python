@@ -87,6 +87,8 @@ Animations made with pygame.
             <a href="outputs/2023-day05-if-you-give-a-seed-a-fertilizer.png"><img src="outputs/2023-day05-if-you-give-a-seed-a-fertilizer.png" height="200"></a>    
         </td>
         <td>
+            <h4><a href="src/year2023/day06vis.py">Day 6</a></h4>
+            <a href="outputs/2023-day06-wait-for-it.png"><img src="outputs/2023-day06-wait-for-it.png" height="200"></a>  
         </td>
     </tr>
 </table>
