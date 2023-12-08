@@ -60,21 +60,21 @@ python src/vis.py --year {year} --day {day}
 
 ### 2023
 
-Animations made with pygame.
+Animations made with pygame. I'm adding videos to this [youtube playlist](https://www.youtube.com/playlist?list=PLo8XMPR0L8PcIiGtLllA7r3llWXHP3I_7). Images link to videos (if uploaded, up to day 3 right now)
 
 <table>
     <tr>
         <td>
             <h4><a href="src/year2023/day01vis.py">Day 1</a></h4>
-            <a href="outputs/2023-day01-trebuchet.png"><img src="outputs/2023-day01-trebuchet.png" height="200"></a>
+            <a href="https://youtu.be/9hk2N5j0_YE"><img src="outputs/2023-day01-trebuchet.png" height="200"></a>
         </td>
         <td>            
             <h4><a href="src/year2023/day02vis.py">Day 2</a></h4>
-            <a href="outputs/2023-day02-cube-conundrum.png"><img src="outputs/2023-day02-cube-conundrum.png" height="200"></a>
+            <a href="https://youtu.be/kaY-e_vGzg4"><img src="outputs/2023-day02-cube-conundrum.png" height="200"></a>
         </td>
         <td>
             <h4><a href="src/year2023/day03vis.py">Day 3</a></h4>
-            <a href="outputs/2023-day03-gear-ratios.png"><img src="outputs/2023-day03-gear-ratios.png" height="200"></a>
+            <a href="https://youtu.be/6he5Wah7WBg"><img src="outputs/2023-day03-gear-ratios.png" height="200"></a>
         </td>
     </tr>
     <tr>
