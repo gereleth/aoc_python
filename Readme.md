@@ -91,4 +91,14 @@ Animations made with pygame.
             <a href="outputs/2023-day06-wait-for-it.png"><img src="outputs/2023-day06-wait-for-it.png" height="200"></a>  
         </td>
     </tr>
+    <tr>
+        <td>
+            <h4><a href="src/year2023/day07vis.py">Day 7</a></h4>
+            <a href="outputs/2023-day07-camel-cards.png"><img src="outputs/2023-day07-camel-cards.png" height="200"></a>
+        </td>
+        <td>  
+        </td>
+        <td>
+        </td>
+    </tr>
 </table>
