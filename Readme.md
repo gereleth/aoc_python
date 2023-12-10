@@ -101,6 +101,18 @@ Animations made with pygame. I'm adding videos to this [youtube playlist](https:
             <a href="https://youtu.be/76pq7DGtRfE" target="_blank" rel="noopener"><img src="outputs/2023-day08-haunted-wasteland.png" height="200"></a>
         </td>
         <td>
+            <h4>Day 9</a></h4>
+            (no vis for now)
+        </td>
+    </tr>
+        <tr>
+        <td>
+            <h4><a href="src/year2023/day10vis.py">Day 10</a></h4>
+            <a href="https://youtu.be/bKFK0A10yi4" target="_blank" rel="noopener"><img src="outputs/2023-day10-pipe-maze.png" height="200"></a>
+        </td>
+        <td>  
+        </td>
+        <td>
         </td>
     </tr>
 </table>
