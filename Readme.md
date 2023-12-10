@@ -97,6 +97,8 @@ Animations made with pygame. I'm adding videos to this [youtube playlist](https:
             <a href="https://youtu.be/I8h9GvjeJ8g" target="_blank" rel="noopener"><img src="outputs/2023-day07-camel-cards.png" height="200"></a>
         </td>
         <td>  
+            <h4><a href="src/year2023/day08vis.py">Day 8</a></h4>
+            <a href="https://youtu.be/76pq7DGtRfE" target="_blank" rel="noopener"><img src="outputs/2023-day08-haunted-wasteland.png" height="200"></a>
         </td>
         <td>
         </td>
