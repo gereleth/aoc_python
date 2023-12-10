@@ -66,39 +66,39 @@ Animations made with pygame. I'm adding videos to this [youtube playlist](https:
     <tr>
         <td>
             <h4><a href="src/year2023/day01vis.py">Day 1</a></h4>
-            <a href="https://youtu.be/9hk2N5j0_YE" target="_blank" rel="noopener"><img src="outputs/2023-day01-trebuchet.png" height="200"></a>
+            <a href="https://youtu.be/9hk2N5j0_YE" target="_blank" rel="noopener"><img src="outputs/2023-day01-trebuchet.png" height="138" width="185"></a>
         </td>
         <td>            
             <h4><a href="src/year2023/day02vis.py">Day 2</a></h4>
-            <a href="https://youtu.be/kaY-e_vGzg4" target="_blank" rel="noopener"><img src="outputs/2023-day02-cube-conundrum.png" height="200"></a>
+            <a href="https://youtu.be/kaY-e_vGzg4" target="_blank" rel="noopener"><img src="outputs/2023-day02-cube-conundrum.png" height="138" width="246"></a>
         </td>
         <td>
             <h4><a href="src/year2023/day03vis.py">Day 3</a></h4>
-            <a href="https://youtu.be/6he5Wah7WBg" target="_blank" rel="noopener"><img src="outputs/2023-day03-gear-ratios.png" height="200"></a>
+            <a href="https://youtu.be/6he5Wah7WBg" target="_blank" rel="noopener"><img src="outputs/2023-day03-gear-ratios.png" height="138" width="246"></a>
         </td>
     </tr>
     <tr>
         <td>
             <h4><a href="src/year2023/day04vis.py">Day 4</a></h4>
-            <a href="https://youtu.be/CzSTY_7OMws" target="_blank" rel="noopener"><img src="outputs/2023-day04-scratchcards.png" height="200"></a>
+            <a href="https://youtu.be/CzSTY_7OMws" target="_blank" rel="noopener"><img src="outputs/2023-day04-scratchcards.png" height="138" width="246"></a>
         </td>
         <td>        
             <h4><a href="src/year2023/day05vis.py">Day 5</a></h4>
-            <a href="https://youtu.be/noSUwk0vDqQ" target="_blank" rel="noopener"><img src="outputs/2023-day05-if-you-give-a-seed-a-fertilizer.png" height="200"></a>    
+            <a href="https://youtu.be/noSUwk0vDqQ" target="_blank" rel="noopener"><img src="outputs/2023-day05-if-you-give-a-seed-a-fertilizer.png" height="138" width="246"></a>    
         </td>
         <td>
             <h4><a href="src/year2023/day06vis.py">Day 6</a></h4>
-            <a href="https://youtu.be/cMvW4DCkeoc" target="_blank" rel="noopener"><img src="outputs/2023-day06-wait-for-it.png" height="200"></a>  
+            <a href="https://youtu.be/cMvW4DCkeoc" target="_blank" rel="noopener"><img src="outputs/2023-day06-wait-for-it.png" height="138" width="246"></a>  
         </td>
     </tr>
     <tr>
         <td>
             <h4><a href="src/year2023/day07vis.py">Day 7</a></h4>
-            <a href="https://youtu.be/I8h9GvjeJ8g" target="_blank" rel="noopener"><img src="outputs/2023-day07-camel-cards.png" height="200"></a>
+            <a href="https://youtu.be/I8h9GvjeJ8g" target="_blank" rel="noopener"><img src="outputs/2023-day07-camel-cards.png" height="138" width="246"></a>
         </td>
         <td>  
             <h4><a href="src/year2023/day08vis.py">Day 8</a></h4>
-            <a href="https://youtu.be/76pq7DGtRfE" target="_blank" rel="noopener"><img src="outputs/2023-day08-haunted-wasteland.png" height="200"></a>
+            <a href="https://youtu.be/76pq7DGtRfE" target="_blank" rel="noopener"><img src="outputs/2023-day08-haunted-wasteland.png" height="138" width="246"></a>
         </td>
         <td>
             <h4>Day 9</a></h4>
@@ -108,7 +108,7 @@ Animations made with pygame. I'm adding videos to this [youtube playlist](https:
         <tr>
         <td>
             <h4><a href="src/year2023/day10vis.py">Day 10</a></h4>
-            <a href="https://youtu.be/bKFK0A10yi4" target="_blank" rel="noopener"><img src="outputs/2023-day10-pipe-maze.png" height="200"></a>
+            <a href="https://youtu.be/bKFK0A10yi4" target="_blank" rel="noopener"><img src="outputs/2023-day10-pipe-maze.png" height="138" width="246"></a>
         </td>
         <td>  
         </td>
