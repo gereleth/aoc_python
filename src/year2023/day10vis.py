@@ -101,15 +101,10 @@ class PipeMaze:
         self.pipes[sr] = self.pipes[sr].replace("S", s_symbol)
         for r, line in enumerate(self.pipes):
             out = True
-            verticals = set()
             for c, char in enumerate(line):
                 if self.is_in_loop((r, c)):
-                    verticals.update(directions[char])
-                    if "v" in verticals and "^" in verticals:
+                    if char in "|LJ":
                         out = not out
-                        verticals.clear()
-                    elif ">" not in directions[char]:
-                        verticals.clear()
                 elif not out:
                     self.inner_tiles.add((r, c))
 

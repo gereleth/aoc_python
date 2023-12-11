@@ -143,18 +143,14 @@ def part2(text_input: str):
     # (it could be a "|" or a "L7" or a "F--J" for example)
     # we switch between outside and inside
     # "F--7", "L--J" type things don't cause a switch
+    # we can model this by only switching on "|LJ" or "|F7"
     enclosed = 0
     for r, line in enumerate(pipes):
         out = True
-        verticals = set()
         for c, char in enumerate(line):
             if (r, c) in loop:
-                verticals.update(directions[char])
-                if "v" in verticals and "^" in verticals:
+                if char in "|LJ":
                     out = not out
-                    verticals.clear()
-                elif ">" not in directions[char]:
-                    verticals.clear()
             elif not out:
                 enclosed += 1
     return enclosed
