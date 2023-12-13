@@ -9,7 +9,7 @@ from year2023.day11 import example_input
 SILVER = (153, 153, 204)
 GOLD = (230, 230, 94)
 TEXT_COLOR = (204, 204, 204)
-GREY_COLOR = (64, 64, 64)
+GRID_COLOR = (100, 100, 100)
 BACKGROUND = (15, 15, 35, 255)
 BACKGROUND_2 = (25, 25, 55)
 
@@ -19,7 +19,11 @@ W_PADDING = 50
 
 FPS = 10
 INITIAL_DELAY = 0.5
+EXPANSION_TIME = 1
+PATH_DELAY = 0.5
+TIME_PER_PATH = 5
 FONT_SIZE = 20
+TOTAL_FONT_SIZE = 30
 
 
 class ExpandingUniverseVis:
@@ -99,16 +103,30 @@ def run():
     pg.init()
     screen = pg.display.set_mode([WIDTH, HEIGHT])
     pg.display.set_caption("Advent of Code 2023 - Day 11 - Cosmic Expansion")
+    font = pg.font.SysFont("monospace", FONT_SIZE)
+    totals_font = pg.font.SysFont("monospace", TOTAL_FONT_SIZE)
 
     clock = pg.time.Clock()
 
     t0 = time.perf_counter()
     t = 0
-    print(universe.exp_c)
-    print(universe.get_rect(0, 3, 1))
-    print(universe.get_rect(0, 3, 1.1))
-    print(universe.get_rect(0, 3, 2))
-    print(universe.get_rect(0, 3, 3))
+
+    galaxy_pairs = list(universe.galaxy_pairs())
+
+    # prepare step counter symbols
+    long_step_symbol = pg.Surface((3 * unit, unit))
+    pg.draw.rect(long_step_symbol, BACKGROUND_2, pg.Rect(0, 0, 3 * unit, unit))
+    pg.draw.rect(long_step_symbol, GRID_COLOR, pg.Rect(0, 0, 3 * unit, unit), 2)
+
+    short_step_symbol = pg.Surface((unit, unit))
+    pg.draw.rect(short_step_symbol, BACKGROUND, pg.Rect(0, 0, unit, unit))
+    pg.draw.rect(short_step_symbol, GRID_COLOR, pg.Rect(0, 0, unit, unit), 2)
+
+    long_steps = 0
+    short_steps = 0
+    total1 = 0
+    total2 = 0
+
     running = True
     # main loop
     while running:
@@ -121,7 +139,12 @@ def run():
                 t0 = time.perf_counter()  # reset to start
 
         t = max(0, time.perf_counter() - t0 - INITIAL_DELAY)
-        expansion_factor = min(3, 1 + 2 * t / 5)
+        expansion_factor = min(3, 1 + 2 * t / EXPANSION_TIME)
+        path_t = min(
+            len(galaxy_pairs) - 1, (t - EXPANSION_TIME - PATH_DELAY) / TIME_PER_PATH
+        )
+        path_index = int(path_t)
+        path_pct = path_t - path_index
 
         # erase everything
         screen.fill(BACKGROUND)
@@ -163,8 +186,8 @@ def run():
             (left, top, w, h) = universe.get_rect(r, C - 1, expansion_factor)
             x1 = xpixels(left + w)
             y1 = ypixels(top + h)
-            pg.draw.line(screen, SILVER, (x0, y0), (x1, y0))
-        pg.draw.line(screen, SILVER, (x0, y1), (x1, y1))
+            pg.draw.line(screen, GRID_COLOR, (x0, y0), (x1, y0))
+        pg.draw.line(screen, GRID_COLOR, (x0, y1), (x1, y1))
         # draw vertical grid lines
         for c in range(C):
             (left, top, w, h) = universe.get_rect(0, c, expansion_factor)
@@ -173,9 +196,72 @@ def run():
             (left, top, w, h) = universe.get_rect(R - 1, c, expansion_factor)
             y1 = ypixels(top + h)
             x1 = xpixels(left + w)
-            pg.draw.line(screen, SILVER, (x0, y0), (x0, y1))
-        pg.draw.line(screen, SILVER, (x1, y0), (x1, y1))
+            pg.draw.line(screen, GRID_COLOR, (x0, y0), (x0, y1))
+        pg.draw.line(screen, GRID_COLOR, (x1, y0), (x1, y1))
 
+        if t > EXPANSION_TIME + PATH_DELAY:
+            # draw paths
+            (ra, ca), (rb, cb) = galaxy_pairs[path_index]
+            (la, ta, w, h) = universe.get_rect(ra, ca, expansion_factor)
+            (lb, tb, w, h) = universe.get_rect(rb, cb, expansion_factor)
+            xa, xb = xpixels(la + w / 2), xpixels(lb + w / 2)
+            ya, yb = ypixels(ta + h / 2), ypixels(tb + h / 2)
+            pg.draw.line(screen, GOLD, (xa, ya), (xa, yb), 4)
+            pg.draw.line(screen, GOLD, (xa, yb), (xb, yb), 4)
+
+            # draw counts
+            short_step_count = font.render(str(short_steps) + " ", 1, TEXT_COLOR)
+            short_step_count_rect = short_step_count.get_rect(
+                centery=HEIGHT / 2, left=0.6 * WIDTH
+            )
+            screen.blit(short_step_count, short_step_count_rect)
+            short_step_symbol_rect = short_step_symbol.get_rect(
+                centery=HEIGHT / 2, left=short_step_count_rect.right
+            )
+            screen.blit(short_step_symbol, short_step_symbol_rect)
+            long_step_count = font.render(" + " + str(long_steps) + " ", 1, TEXT_COLOR)
+            long_step_count_rect = long_step_count.get_rect(
+                centery=HEIGHT / 2, left=short_step_symbol_rect.right
+            )
+            screen.blit(long_step_count, long_step_count_rect)
+            long_step_symbol_rect = long_step_symbol.get_rect(
+                centery=HEIGHT / 2, left=long_step_count_rect.right
+            )
+            screen.blit(long_step_symbol, long_step_symbol_rect)
+            # distance path totals
+            silver_distance = short_steps + 2 * long_steps
+            silver_distance_text = font.render(" = " + str(silver_distance), 1, SILVER)
+            silver_distance_rect = silver_distance_text.get_rect(
+                bottom=HEIGHT / 2, left=long_step_symbol_rect.right
+            )
+            screen.blit(silver_distance_text, silver_distance_rect)
+            gold_distance = short_steps + 1_000_000 * long_steps
+            gold_distance_text = font.render(" = " + str(gold_distance), 1, GOLD)
+            gold_distance_rect = gold_distance_text.get_rect(
+                top=HEIGHT / 2, left=long_step_symbol_rect.right
+            )
+            screen.blit(gold_distance_text, gold_distance_rect)
+            # part running totals
+            total1_label_text = totals_font.render("Part 1:", 1, SILVER)
+            total1_label_rect = total1_label_text.get_rect(
+                centery=HEIGHT / 4, right=long_step_symbol_rect.right
+            )
+            screen.blit(total1_label_text, total1_label_rect)
+            total1_value_text = totals_font.render(" " + str(total1), 1, SILVER)
+            total1_value_rect = total1_value_text.get_rect(
+                centery=HEIGHT / 4, left=long_step_symbol_rect.right
+            )
+            screen.blit(total1_value_text, total1_value_rect)
+            total2_label_text = totals_font.render("Part 2:", 1, GOLD)
+            total2_label_rect = total2_label_text.get_rect(
+                centery=HEIGHT * 3 / 4, right=long_step_symbol_rect.right
+            )
+            screen.blit(total2_label_text, total2_label_rect)
+            total2_value_text = totals_font.render(" " + str(total2), 1, GOLD)
+            total2_value_rect = total2_value_text.get_rect(
+                centery=HEIGHT * 3 / 4, left=long_step_symbol_rect.right
+            )
+            screen.blit(total2_value_text, total2_value_rect)
         # actually update the screen now
         pg.display.flip()
 
