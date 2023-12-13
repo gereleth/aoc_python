@@ -82,3 +82,19 @@ def part2(text_input: str):
 def test_part_2():
     assert sum_distances(example_input, expansion_factor=10) == 1030
     assert sum_distances(example_input, expansion_factor=100) == 8410
+
+
+def test_equation():
+    # Suppose we did a real string expansion by adding rows/columns for part 1.
+    # How to scale that to part 2?..
+    # Well actually the number of short steps and long steps in the input stays the same.
+    # So we can count steps for two small expansion factors,
+    # find out how many are short and how many are long.
+    # Then use that to calculate the answer at any expansion factor.
+    total1 = sum_distances(example_input, expansion_factor=1)
+    total2 = sum_distances(example_input, expansion_factor=2)
+    long_steps = total2 - total1
+    short_steps = total1 - long_steps
+    total_equation = short_steps + 100 * long_steps
+    total_calc = sum_distances(example_input, expansion_factor=100)
+    assert total_equation == total_calc
