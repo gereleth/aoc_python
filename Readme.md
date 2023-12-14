@@ -110,7 +110,9 @@ Animations made with pygame. I'm adding videos to this [youtube playlist](https:
             <h4><a href="src/year2023/day10vis.py">Day 10</a></h4>
             <a href="https://youtu.be/bKFK0A10yi4" target="_blank" rel="noopener"><img src="outputs/2023-day10-pipe-maze.png" height="138" width="246"></a>
         </td>
-        <td>  
+        <td>
+            <h4><a href="src/year2023/day11vis.py">Day 11</a></h4>
+            <a href="https://youtu.be/H8DMes_sOWw" target="_blank" rel="noopener"><img src="outputs/2023-day11-cosmic-expansion.png" height="138" width="246"></a>
         </td>
         <td>
         </td>
