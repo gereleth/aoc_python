@@ -82,6 +82,7 @@ def part2(text_input: str):
 def test_part_2():
     assert sum_distances(example_input, expansion_factor=10) == 1030
     assert sum_distances(example_input, expansion_factor=100) == 8410
+    assert sum_distances(example_input, expansion_factor=1_000_000) == 82000210
 
 
 def test_equation():
