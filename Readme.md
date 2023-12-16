@@ -115,6 +115,20 @@ Animations made with pygame. I'm adding videos to this [youtube playlist](https:
             <a href="https://youtu.be/zbFeoUQiC9E" target="_blank" rel="noopener"><img src="outputs/2023-day11-cosmic-expansion.png" height="138" width="246"></a>
         </td>
         <td>
+            <h4>Day 12</a></h4>
+            (what do I even show?..)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4>Day 13</a></h4>
+            (should be doable)
+        </td>
+        <td>
+            <h4><a href="src/year2023/day14vis.py">Day 14</a></h4>
+            <a href="https://youtu.be/DY3gP2WB-oo" target="_blank" rel="noopener"><img src="outputs/2023-day14-parabolic-reflector-dish.png" height="138" width="246"></a>
+        </td>
+        <td>
         </td>
     </tr>
 </table>
