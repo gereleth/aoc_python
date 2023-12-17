@@ -128,6 +128,20 @@ Animations made with pygame. I'm adding videos to this [youtube playlist](https:
             <h4><a href="src/year2023/day14vis.py">Day 14</a></h4>
             <a href="https://youtu.be/DY3gP2WB-oo" target="_blank" rel="noopener"><img src="outputs/2023-day14-parabolic-reflector-dish.png" height="138" width="246"></a>
         </td>
+        <td>            
+        <h4>Day 15</a></h4>
+            (not as interesting)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4>Day 16</a></h4>
+            (have a draft)
+        </td>
+        <td>
+            <h4><a href="src/year2023/day17vis.py">Day 17</a></h4>
+            <a href="https://youtu.be/GhkrkVj8ODk" target="_blank" rel="noopener"><img src="outputs/2023-day17-clumsy-crucible.png" height="138" width="246"></a>
+        </td>
         <td>
         </td>
     </tr>
