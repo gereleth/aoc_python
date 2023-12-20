@@ -4,7 +4,6 @@ import sys
 import pygame as pg
 from aocd import get_data
 import time
-from dataclasses import dataclass
 from year2023.day19 import (
     parse_input,
     example_input,
@@ -149,9 +148,11 @@ class AnimState:
         # maybe define overrides here for some stages
         # returns (action duration, total_duration)
         return {
-            "init": (0.5, 0.5),
+            "init": (0.5, 2),
             "send_away": (0.1, 0.1),
-            "accept": (1, 2),
+            "accept": (0.5, 2),
+            "drop_part": (0.5, 1.2),
+            "raise_steps": (0.5, 1.2),
         }.get(stage, (1, 1.2))
 
     def update(self):
@@ -210,14 +211,42 @@ class AnimState:
                 self.stage = "reject"
             else:
                 self.stage = "send_to_queue"
-        elif self.stage in ("send_to_queue", "accept", "reject"):
-            if self.stage == "send_to_queue":
-                self.queue.insert(1, self.sent_to_queue)
-            elif self.stage == "accept":
-                if self.task == 1:
-                    self.total += sum(self.sent_to_queue.part.values())
-                else:
-                    self.total += total_combinations(self.sent_to_queue.part)
+        elif self.task == 1 and self.stage == "send_to_queue":
+            self.queue[0] = self.sent_to_queue
+            self.sent_to_queue = None
+            self.workflow = self.workflows[self.queue[0].workflow_key]
+            self.stage = "show_workflows"
+            self.step_index = 0
+        elif self.task == 2 and self.stage == "send_to_queue":
+            self.queue.insert(1, self.sent_to_queue)
+            self.sent_to_queue = None
+            if self.step_index + 1 < len(self.workflow):
+                self.stage = "raise_steps"
+                self.step_index += 1
+            else:
+                self.queue.pop(0)
+                self.workflow = self.workflows[self.queue[0].workflow_key]
+                self.stage = "show_workflows"
+                self.step_index = 0
+        elif self.task == 1 and self.stage == "accept":
+            self.total += sum(self.sent_to_queue.part.values())
+            self.sent_to_queue = None
+            self.stage = "queue"
+            self.queue.pop(0)
+        elif self.task == 2 and self.stage == "accept":
+            self.total += total_combinations(self.sent_to_queue.part)
+            self.sent_to_queue = None
+            if self.step_index + 1 < len(self.workflow):
+                self.stage = "raise_steps"
+                self.step_index += 1
+            else:
+                self.queue.pop(0)
+                self.stage = "queue"
+        elif self.task == 1 and self.stage == "reject":
+            self.sent_to_queue = None
+            self.stage = "queue"
+            self.queue.pop(0)
+        elif self.task == 2 and self.stage == "reject":
             self.sent_to_queue = None
             if self.task == 2 and self.step_index + 1 < len(self.workflow):
                 self.stage = "raise_steps"
@@ -243,13 +272,21 @@ class AnimState:
             data["left0"] = left0 + W_QUEUE * (1 - self.stage_done_share)
             data["left"] = data["left0"] + W_QUEUE
         elif self.stage == "send_to_queue":
-            data["left"] = PADDING + round(W_QUEUE * (1 + self.stage_done_share))
+            going_up = (self.task == 1) or (
+                self.task == 2 and self.step_index + 1 == len(self.workflow)
+            )
+            if going_up:
+                data["left"] = PADDING + W_QUEUE
+            else:
+                data["left"] = PADDING + round(W_QUEUE * (1 + self.stage_done_share))
         return data
 
     def get_workflows_render_data(self):
         left0 = PADDING
         top0 = self.top + PADDING + H_PART + PADDING
         data = {"left": left0, "top": top0, "items": []}
+        if self.stage in ("send_to_queue", "accept", "reject") and self.task == 1:
+            return data
         if self.stage not in ("queue", "init", "finished"):
             if self.stage == "raise_steps":
                 data["top"] = (
@@ -280,19 +317,34 @@ class AnimState:
 
     def get_sent_away_render_data(self):
         if self.stage == "send_to_queue":
-            data = {"surface": self.sent_to_queue.surface}
-            left0 = PADDING
-            top = self.top + PADDING + H_PART + PADDING
+            go_up = (self.task == 1) or (
+                self.task == 2 and self.step_index + 1 == len(self.workflow)
+            )
+            if go_up:
+                data = {"surface": self.sent_to_queue.surface}
+                left = PADDING
+                top = self.top + PADDING + H_PART + PADDING
 
-            distance = WIDTH - left0 + H_PART + PADDING
-            done_distance = self.stage_done_share * distance
-            dleft = W_QUEUE
-            left = min(left0 + done_distance, left0 + dleft)
-            if left - left0 < done_distance:
-                top = top - min(H_PART + PADDING, done_distance - (left - left0))
-            data["left"] = left
-            data["top"] = top
-            return data
+                distance = WIDTH - left + H_PART + PADDING
+                done_distance = self.stage_done_share * distance
+                top = top - min(H_PART + PADDING, done_distance)
+                data["left"] = left
+                data["top"] = top
+                return data
+            else:
+                data = {"surface": self.sent_to_queue.surface}
+                left0 = PADDING
+                top = self.top + PADDING + H_PART + PADDING
+
+                distance = WIDTH - left0 + H_PART + PADDING
+                done_distance = self.stage_done_share * distance
+                dleft = W_QUEUE
+                left = min(left0 + done_distance, left0 + dleft)
+                if left - left0 < done_distance:
+                    top = top - min(H_PART + PADDING, done_distance - (left - left0))
+                data["left"] = left
+                data["top"] = top
+                return data
         elif self.stage == "reject":
             data = {"surface": self.sent_to_queue.surface}
             left0 = PADDING
@@ -387,6 +439,10 @@ class AnimState:
             left=(W_QUEUE * 2 + PADDING),
             top=self.top + 2 * (H_PART + PADDING) + PADDING,
         )
+        screen.blit(text, rect)
+        # render queue size
+        text = self.font.render(f"In queue: {len(self.queue)}", 1, self.text_color)
+        rect = text.get_rect(left=W_QUEUE * 2 + PADDING, top=rect.bottom)
         screen.blit(text, rect)
 
 
