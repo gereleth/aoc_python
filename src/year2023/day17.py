@@ -45,6 +45,9 @@ class CrucibleCity:
         self.finish = (self.R - 1, self.C - 1)
         self.min_straight = min_straight
         self.max_straight = max_straight
+        self.lower_bound_cost_to_finish = {}
+        self.lower_bound_queue = [(0, self.finish)]
+        heapq.heapify(self.lower_bound_queue)
 
     def next_states(self, state: State):
         # always turn here and explore all straight moves left/right
@@ -79,6 +82,31 @@ class CrucibleCity:
                         state.path + extra_path,
                     )
 
+    def get_lower_bound_cost_to_finish(self, position):
+        current_cost = self.lower_bound_cost_to_finish.get(position, math.inf)
+        while (
+            len(self.lower_bound_queue) > 0
+            and current_cost >= self.lower_bound_queue[0][0]
+        ):
+            cost, pos = heapq.heappop(self.lower_bound_queue)
+            if pos == position:
+                current_cost = min(current_cost, cost)
+            cost_before = self.lower_bound_cost_to_finish.get(pos, math.inf)
+            if cost >= cost_before:
+                continue
+            self.lower_bound_cost_to_finish[pos] = cost
+            r0, c0 = pos
+            cost0 = self.costs[r0][c0]
+            for direction in "><v^":
+                dr, dc = movechars_dr_dc[direction]
+                r, c = r0 + dr, c0 + dc
+                if r < 0 or r >= self.R or c < 0 or c >= self.C:
+                    continue
+                cost_before = self.lower_bound_cost_to_finish.get((r, c), math.inf)
+                if cost + cost0 < cost_before:
+                    heapq.heappush(self.lower_bound_queue, (cost + cost0, (r, c)))
+        return current_cost
+
 
 def search(city: CrucibleCity, yield_search_states=False):
     queue = [(0, State(0, *city.start, ">", "")), (0, State(0, *city.start, "v", ""))]
@@ -87,11 +115,8 @@ def search(city: CrucibleCity, yield_search_states=False):
     bestcost = math.inf
     while len(queue) > 0:
         priority, prev_state = heapq.heappop(queue)
-        # print(len(queue), prev_state)
-        lower_bound = (
-            prev_state.cost
-            + abs(prev_state.r - city.finish[0])
-            + abs(prev_state.c - city.finish[1])
+        lower_bound = prev_state.cost + city.get_lower_bound_cost_to_finish(
+            (prev_state.r, prev_state.c)
         )
         if lower_bound >= bestcost:
             continue
@@ -105,13 +130,12 @@ def search(city: CrucibleCity, yield_search_states=False):
                     if yield_search_states:
                         yield state, state.cost, bestcost, len(queue)
             else:
-                dist = abs(state.r - city.finish[0]) + abs(state.c - city.finish[1])
+                dist = city.get_lower_bound_cost_to_finish((state.r, state.c))
                 lower_bound = state.cost + dist
                 if lower_bound >= bestcost:
                     continue
                 priority = lower_bound
                 heapq.heappush(queue, (priority, state))
-    # print("search done", beststate)
     yield beststate, bestcost, bestcost, len(queue)
 
 
