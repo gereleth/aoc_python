@@ -41,15 +41,23 @@ def count_energized_tiles(lines, origin):
     while len(origins) > 0:
         origin = origins.pop()
         processed.add(origin)
-        r0, c0, direction = origin
-        energized.add((r0, c0))
+        r, c, direction = origin
         dr, dc = movechars_dr_dc[direction]
-        r = r0 + dr
-        c = c0 + dc
-        if r < 0 or r >= len(lines) or c < 0 or c >= len(lines[0]):
-            continue
-        newchar = lines[r][c]
-        newdirs = direction_transforms[newchar][direction]
+        newdirs = direction
+        while newdirs == direction:
+            energized.add((r, c))
+            r = r + dr
+            c = c + dc
+            if r < 0 or r >= len(lines) or c < 0 or c >= len(lines[0]):
+                newdirs = ""
+                break
+            newchar = lines[r][c]
+            if newchar == ".":
+                continue
+            newdirs = direction_transforms[newchar][direction]
+            if newdirs == direction:
+                # splitter sideways
+                processed.add((r, c, direction))
         for newdir in newdirs:
             neworigin = tuple((r, c, newdir))
             if neworigin not in processed:
@@ -71,6 +79,7 @@ def part2(text_input):
     for origin in origins:
         cnt = count_energized_tiles(lines, origin)
         if cnt > best:
+            print(origin, cnt)
             best = cnt
     return best
 
