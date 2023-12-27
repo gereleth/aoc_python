@@ -1,6 +1,6 @@
 # Problem statement: https://adventofcode.com/2023/day/4
 
-day_title = "Gear Ratios"
+day_title = "Scratchcards"
 
 example_input = """
 Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
