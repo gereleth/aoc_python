@@ -73,7 +73,7 @@ if __name__ == "__main__":
     ax.set(
         ylabel=None,
         xlabel="time, s",
-        title="Solution times for Advent of Code 2022",
+        title=f"Solution times for Advent of Code {args.year}",
     )
     ax.legend(["Part 1", "Part 2"])
     if res.max().max() > 15 * 1000:
