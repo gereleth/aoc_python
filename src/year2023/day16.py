@@ -79,7 +79,7 @@ def part2(text_input):
     for origin in origins:
         cnt = count_energized_tiles(lines, origin)
         if cnt > best:
-            print(origin, cnt)
+            # print(origin, cnt)
             best = cnt
     return best
 
