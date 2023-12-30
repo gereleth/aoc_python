@@ -135,8 +135,8 @@ Animations made with pygame. I'm adding videos to this [youtube playlist](https:
     </tr>
     <tr>
         <td>
-            <h4>Day 16</a></h4>
-            (have a draft)
+            <h4><a href="src/year2023/day16vis.py">Day 16</a></h4>
+            <a href="https://youtu.be/on7ic1wlp7A" target="_blank" rel="noopener"><img src="outputs/2023-day16-the-floor-will-be-lava.png" height="138" width="246"></a>
         </td>
         <td>
             <h4><a href="src/year2023/day17vis.py">Day 17</a></h4>
