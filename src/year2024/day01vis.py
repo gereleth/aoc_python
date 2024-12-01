@@ -6,9 +6,9 @@ from aocd import get_data
 
 from .day01 import day_title, parse_input
 
-WIDTH = 1280
-HEIGHT = 1040
-PADDING = 20
+WIDTH = 1920
+HEIGHT = 1080
+PADDING = 40
 SILVER = (153, 153, 204)
 GOLD = (230, 230, 94)
 TEXT_COLOR = (204, 204, 204)
@@ -85,6 +85,10 @@ def get_stage(frame_count):
             return name, 1.0
 
 
+started = False
+start_frame = 0
+
+
 class VisSketch(Sketch):
     def settings(self):
         self.size(WIDTH, HEIGHT)
@@ -96,9 +100,17 @@ class VisSketch(Sketch):
         self.stroke("white")
         self.window_title(f"Advent of Code 2024 - Day 1 - {day_title}")
 
+    def mouse_clicked(self):
+        global started, start_frame
+        started = True
+        start_frame = self.frame_count
+
     def draw(self):
         self.background(*BACKGROUND)
-        stage, share_done = get_stage(self.frame_count)
+        if started:
+            stage, share_done = get_stage(self.frame_count - start_frame)
+        else:
+            stage, share_done = get_stage(0)
         if stage == "init":
             self.stroke(*LINES_COLOR)
             self.lines(lines1)
