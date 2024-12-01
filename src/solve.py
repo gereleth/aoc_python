@@ -1,6 +1,6 @@
 import argparse
 import time
-from aocd import get_data
+from aocd import get_data, submit
 from datetime import datetime as dt
 from importlib import import_module
 
@@ -20,11 +20,16 @@ def init_argparse() -> argparse.ArgumentParser:
         "--day",
         type=int,
     )
+    parser.add_argument(
+        "-s",
+        "--submit",
+        type=int,
+    )
     parser.add_argument("-i", "--input", type=str, help="filepath for input file")
     return parser
 
 
-def run_day(year, day, input_path=None):
+def run_day(year, day, input_path=None, submit_answer=0):
     try:
         solution = import_module(f"year{year}.day{day:02d}")
     except ModuleNotFoundError:
@@ -39,9 +44,13 @@ def run_day(year, day, input_path=None):
     answer1 = solution.part1(content)
     t1 = time.perf_counter()
     print(f"Part 1: {answer1} ({t1-t0:.3f} s)")
+    if submit_answer == 1:
+        submit(answer1, part="a", day=day, year=year)
     answer2 = solution.part2(content)
     t2 = time.perf_counter()
     print(f"Part 2: {answer2} ({t2-t1:.3f} s)")
+    if submit_answer == 2:
+        submit(answer2, part="b", day=day, year=year)
     return solution.day_title, (answer1, t1 - t0), (answer2, t2 - t0)
 
 
@@ -64,4 +73,6 @@ if __name__ == "__main__":
         else:
             days = range(1, 26)
         for day in days:
-            day_title, *ans_times = run_day(year, day, input_path=args.input)
+            day_title, *ans_times = run_day(
+                year, day, input_path=args.input, submit_answer=args.submit
+            )
