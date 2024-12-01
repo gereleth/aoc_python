@@ -20,16 +20,22 @@ def init_argparse() -> argparse.ArgumentParser:
         "--day",
         type=int,
     )
+    parser.add_argument("-i", "--input", type=str, help="filepath for input file")
     return parser
 
 
-def run_day(year, day, input_path=None, submit_answer=0):
+def run_day(year, day, input_path=None):
     try:
         vis = import_module(f"year{year}.day{day:02d}vis")
-        vis.run()
+        if hasattr(vis, "run"):
+            # pygame-based visualizations
+            vis.run()
+        elif hasattr(vis, "VisSketch"):
+            # py5-based visualizations
+            vis.VisSketch().run_sketch()
     except ModuleNotFoundError as e:
         print(e)
-        print("No vis found for year {year} day {day}")
+        print(f"No vis found for year {year} day {day}")
 
 
 if __name__ == "__main__":
