@@ -58,6 +58,11 @@ You can see them by running
 python src/vis.py --year {year} --day {day}
 ```
 
+### 2024
+
+I'm looking into making animations with py5. Not sure how many I'll manage but day 1 is there!
+
+
 ### 2023
 
 Animations made with pygame. I'm adding videos to this [youtube playlist](https://www.youtube.com/playlist?list=PLo8XMPR0L8PcIiGtLllA7r3llWXHP3I_7). Click an image to watch that video.
@@ -151,6 +156,28 @@ Animations made with pygame. I'm adding videos to this [youtube playlist](https:
         <td>
             <h4><a href="src/year2023/day19vis.py">Day 19</a></h4>
             <a href="https://youtu.be/WqCZB9lt1vI" target="_blank" rel="noopener"><img src="outputs/2023-day19-aplenty.png" height="138" width="246"></a>
+        </td>
+        <td>
+            <h4>Day 20</a></h4>
+        </td>
+        <td>
+            <h4>Day 21</a></h4>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4>Day 22</a></h4>
+        </td>
+        <td>
+            <h4>Day 23</a></h4>
+        </td>
+        <td>
+            <h4>Day 24</a></h4>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4>Day 25</a></h4>
         </td>
         <td>
         </td>
