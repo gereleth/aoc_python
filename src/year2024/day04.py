@@ -11,6 +11,8 @@ def part1(text_input: str) -> int:
     steps = [(0, 1), (1, 0), (1, 1), (1, -1)]
     for r in range(R):
         for c in range(C):
+            if lines[r][c] not in "XS":
+                continue
             for dr, dc in steps:
                 if (
                     r + 3 * dr < 0
