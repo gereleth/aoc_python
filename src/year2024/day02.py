@@ -38,7 +38,6 @@ def is_safe2(report: List[int]) -> bool:
 
 def part2(text_input: str) -> int:
     reports = parse_input(text_input)
-    print(text_input)
     answer = sum(is_safe2(report) for report in reports)
     return answer
 
