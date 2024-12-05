@@ -29,7 +29,7 @@ lines = text.split("\n")
 started = False
 start_frame = 0
 
-FONT_SIZE = 6
+FONT_SIZE = 22
 LEADING = FONT_SIZE * 1.0  # line height
 W = -1  # single letter width, actual value calculated in setup
 background = None
