@@ -265,7 +265,7 @@ class VisSketch(Sketch):
         self.smooth()
 
     def setup(self):
-        self.window_title(f"Advent of Code 2024 - Day 5 - {day_title}")
+        self.window_title(f"Advent of Code 2024 - Day 6 - {day_title}")
 
         # prepare and measure font
         font = self.create_font("Liberation Mono", FONT_SIZE)
