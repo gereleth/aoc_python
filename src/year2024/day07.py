@@ -30,7 +30,10 @@ def is_possible(result: int, nums: List[int], operators="+*") -> bool:
                 elif op == "*":
                     new = calc * num
                 else:
-                    new = int(str(calc) + str(num))
+                    m = 1
+                    while m <= num:
+                        m *= 10
+                    new = calc * m + num
                 if is_last:
                     if new == result:
                         return True
