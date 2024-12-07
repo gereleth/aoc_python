@@ -1,22 +1,26 @@
 # Problem statement: https://adventofcode.com/2024/day/5
 
-from typing import List
+from typing import List, DefaultDict, Set
+from collections import defaultdict
 
 day_title = "Print Queue"
 
 
 def parse_input(text_input: str):
     rules_text, updates_text = text_input.split("\n\n")
-    rules = set(tuple(map(int, rule.split("|"))) for rule in rules_text.split("\n"))
-    updates = [list(map(int, update.split(","))) for update in updates_text.split("\n")]
+    rules = defaultdict(set)
+    for rule in rules_text.split("\n"):
+        a, b = rule.split("|")
+        rules[a].add(b)
+    updates = [update.split(",") for update in updates_text.split("\n")]
     return rules, updates
 
 
-def is_ordered(update: List[int], rules) -> bool:
+def is_ordered(update: List[str], after: DefaultDict[str, Set[str]]) -> bool:
     for i1, p1 in enumerate(update[:-1]):
         for i2 in range(i1 + 1, len(update)):
             p2 = update[i2]
-            if (p2, p1) in rules:
+            if p1 in after[p2]:
                 return False
     return True
 
@@ -26,41 +30,32 @@ def part1(text_input: str) -> int:
     total = 0
     for update in updates:
         if is_ordered(update, rules):
-            total += update[len(update) // 2]
+            total += int(update[len(update) // 2])
     return total
 
 
-def get_correct_order(rules):
-    # chip away at the rules list by looking for pages that always come first
-    # or always come last
-    rules = list(rules)
-    firsts = []
-    lasts = []
-    while len(rules) > 0:
-        rules_count = len(rules)
-        before = set(a for a, _ in rules)
-        after = set(b for _, b in rules)
-        middles = before.intersection(after)
-        first = before.difference(middles)
-        last = after.difference(middles)
-        firsts.append(first)
-        lasts.append(last)
-        rules = [(a, b) for (a, b) in rules if a not in first and b not in last]
-        if len(rules) == rules_count:
-            # happens with the full set of rules from the task input =)
-            raise ValueError("No ordering found, rules might be cyclic")
-        elif len(rules) == 0:
-            firsts.append(middles)
-    return [page for pages in firsts for page in pages] + [
-        page for pages in lasts[::-1] for page in pages
-    ]
-
-
-def reorder(update, rules):
-    update = set(update)
-    relevant = set((a, b) for (a, b) in rules if a in update and b in update)
-    correct = get_correct_order(relevant)
-    return [i for i in correct if i in update]
+def reorder(update: List[str], rules: DefaultDict[str, Set[str]]) -> List[str]:
+    """Merge sort list of pages according to rules"""
+    # we could make this even more efficient by only sorting the parts
+    # that contain the middle element
+    # but this is fast enough for me =)
+    to_sort = [(0, set(update))]
+    while len(to_sort) > 0:
+        index, unordered = to_sort.pop()
+        page = unordered.pop()
+        before = unordered.difference(rules[page])
+        after = unordered.intersection(rules[page])
+        page_index = index + len(before)
+        update[page_index] = page
+        if len(before) == 1:
+            update[index] = before.pop()
+        elif len(before) > 0:
+            to_sort.append((index, before))
+        if len(after) == 1:
+            update[page_index + 1] = after.pop()
+        elif len(after) > 0:
+            to_sort.append((page_index + 1, after))
+    return update
 
 
 def part2(text_input: str) -> int:
@@ -69,7 +64,7 @@ def part2(text_input: str) -> int:
     for update in updates:
         if not is_ordered(update, rules):
             update = reorder(update, rules)
-            total += update[len(update) // 2]
+            total += int(update[len(update) // 2])
     return total
 
 
