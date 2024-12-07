@@ -22,6 +22,7 @@ def is_possible(result: int, nums: List[int], operators="+*") -> bool:
     while len(nums) > 0:
         new_calcs = []
         num = nums.pop()
+        is_last = len(nums) == 0
         for calc in calcs:
             for op in operators:
                 if op == "+":
@@ -30,8 +31,9 @@ def is_possible(result: int, nums: List[int], operators="+*") -> bool:
                     new = calc * num
                 else:
                     new = int(str(calc) + str(num))
-                if new == result and len(nums) == 0:
-                    return True
+                if is_last:
+                    if new == result:
+                        return True
                 elif new < result:
                     new_calcs.append(new)
         calcs = new_calcs
