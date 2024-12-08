@@ -16,28 +16,52 @@ def parse_input(text_input: str) -> List[Tuple[int, List[int]]]:
     return data
 
 
+# reverse_op functions find x in
+# x (op) a = b
+# return -1 if impossible
+
+
+def reverse_plus(a: int, b: int):
+    return b - a
+
+
+def reverse_multiply(a: int, b: int):
+    if b % a == 0:
+        return b // a
+    return -1
+
+
+def reverse_concat(a: int, b: int):
+    m = 1
+    while m <= a:
+        m *= 10
+    if b > a and b % m == a:
+        return (b - a) // m
+    else:
+        return -1
+
+
+reverse = {
+    "+": reverse_plus,
+    "*": reverse_multiply,
+    "|": reverse_concat,
+}
+
+
 def is_possible(result: int, nums: List[int], operators="+*") -> bool:
-    nums = nums[::-1]
-    calcs = [nums.pop()]
+    nums = nums
+    calcs = [result]
     while len(nums) > 0:
         new_calcs = []
         num = nums.pop()
         is_last = len(nums) == 0
         for calc in calcs:
             for op in operators:
-                if op == "+":
-                    new = calc + num
-                elif op == "*":
-                    new = calc * num
-                else:
-                    m = 1
-                    while m <= num:
-                        m *= 10
-                    new = calc * m + num
+                new = reverse[op](num, calc)
                 if is_last:
-                    if new == result:
+                    if new == 0:
                         return True
-                elif new < result:
+                elif new > 0:
                     new_calcs.append(new)
         calcs = new_calcs
     return False
@@ -56,9 +80,7 @@ def part2(text_input: str) -> int:
     data = parse_input(text_input)
     total = 0
     for result, nums in data:
-        if is_possible(result, nums):
-            total += result
-        elif is_possible(result, nums, operators="|+*"):
+        if is_possible(result, nums, operators="|+*"):
             total += result
     return total
 
