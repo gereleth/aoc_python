@@ -66,7 +66,7 @@ Animations made with py5. I'm adding videos to this [youtube playlist](https://w
     <tr>
         <td>
             <h4><a href="src/year2024/day01vis.py">Day 1</a></h4>
-            (needs upload)
+            <a href="https://youtu.be/MIOsQXBrSvU" target="_blank" rel="noopener"><img src="outputs/2024-day01-historian-hysteria.png" height="135" width="240"></a>
         </td>
         <td>            
             Day 2
