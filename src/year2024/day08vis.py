@@ -1,14 +1,8 @@
-# Problem statement: https://adventofcode.com/2024/day/6
+# Problem statement: https://adventofcode.com/2024/day/8
 
-from math import ceil
-import random
-import py5
-from py5 import Sketch, Py5Font, PI
+from py5 import Sketch  # , Py5Font
 from aocd import get_data
-import numpy as np
-from functools import cache
-from .day08 import day_title, test_input, AntennaField
-from collections import deque
+from .day08 import day_title, AntennaField
 from statemachine import StateMachine, State
 
 # print(Py5Font.list()) # list available fonts
