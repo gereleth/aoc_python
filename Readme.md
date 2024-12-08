@@ -60,8 +60,47 @@ python src/vis.py --year {year} --day {day}
 
 ### 2024
 
-I'm looking into making animations with py5. Not sure how many I'll manage but day 1 is there!
+Animations made with py5. I'm adding videos to this [youtube playlist](https://www.youtube.com/playlist?list=PLo8XMPR0L8PeHbxb70MJqsCd_hETOFbI9). Click an image to watch that video.
 
+<table>
+    <tr>
+        <td>
+            <h4><a href="src/year2024/day01vis.py">Day 1</a></h4>
+            (needs upload)
+        </td>
+        <td>            
+            Day 2
+        </td>
+        <td>
+            <h4><a href="src/year2024/day03vis.py">Day 3</a></h4>
+            (needs upload)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="src/year2024/day04vis.py">Day 4</a></h4>
+            (needs upload)
+        </td>
+        <td>        
+            Day 5
+        </td>
+        <td>
+            <h4><a href="src/year2024/day06vis.py">Day 6</a></h4>
+            (needs upload)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Day 7
+        </td>
+        <td>  
+            <h4><a href="src/year2024/day08vis.py">Day 8</a></h4>
+            <a href="https://youtu.be/OKk7IBs2s_k" target="_blank" rel="noopener"><img src="outputs/2024-day08-resonant-collinearity.png" height="135" width="240"></a>
+        </td>
+        <td>
+        </td>
+    </tr>
+</table>
 
 ### 2023
 
