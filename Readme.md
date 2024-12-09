@@ -98,6 +98,8 @@ Animations made with py5. I'm adding videos to this [youtube playlist](https://w
             <a href="https://youtu.be/OKk7IBs2s_k" target="_blank" rel="noopener"><img src="outputs/2024-day08-resonant-collinearity.png" height="135" width="240"></a>
         </td>
         <td>
+        <h4><a href="src/year2024/day09vis.py">Day 9</a></h4>
+            (needs upload)
         </td>
     </tr>
 </table>
