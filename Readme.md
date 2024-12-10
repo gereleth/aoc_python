@@ -102,6 +102,16 @@ Animations made with py5. I'm adding videos to this [youtube playlist](https://w
             (needs upload)
         </td>
     </tr>
+    <tr>
+        <td>
+            <h4><a href="src/year2024/day10vis.py">Day 10</a></h4>
+            <a href="https://youtu.be/2kjX5DxUANc" target="_blank" rel="noopener"><img src="outputs/2024-day10-hoof-it.png" height="135" width="240"></a>
+        </td>
+        <td>  
+        </td>
+        <td>
+        </td>
+    </tr>
 </table>
 
 ### 2023
