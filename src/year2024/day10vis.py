@@ -162,6 +162,17 @@ NCOLORS = 10
 background = None
 
 
+# z = [[int(i) for i in line] for line in hiking.lines]
+# x = PW + W * np.arange(hiking.C)
+# y = PH + W * np.arange(hiking.R)
+# from contourpy import contour_generator
+
+# cont_gen = contour_generator(z=z, x=x, y=y)
+# contours = {}
+# for h in range(1, 18):
+#     contours[h] = cont_gen.lines(h / 2)
+
+
 class VisSketch(Sketch):
     def settings(self):
         self.size(WIDTH, HEIGHT)
@@ -194,6 +205,7 @@ class VisSketch(Sketch):
         background.stroke(*BACKGROUND_2)
         for r, c, height in hiking.iter_points():
             self.draw_tile(r, c, height, gr=background)
+        # self.draw_contours(gr=background)
         background.end_draw()
 
         data.add_listener(self)
@@ -350,9 +362,25 @@ class VisSketch(Sketch):
         self.text(text, x0, y0 + 60)
         self.pop()
 
+    # def draw_contours(self, gr=None):
+    #     g = self if gr is None else gr
+    #     g.push()
+    #     g.shape_mode(self.LINE_LOOP)
+    #     g.no_fill()
+    #     g.stroke_weight(2)
+    #     for h, lines in contours.items():
+    #         color = self.map_color(h, bright=True)
+    #         g.stroke(*color)
+    #         for line in lines:
+    #             g.begin_shape()
+    #             g.vertices(line)
+    #             g.end_shape()
+    #     g.pop()
+
     def draw(self):
         self.image(background, 0, 0)
         data.tick()
+        # self.draw_contours()
         self.draw_trail_tiles()
         self.draw_headpoints()
         self.draw_trail_lines()
