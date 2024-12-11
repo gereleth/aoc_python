@@ -47,9 +47,9 @@ test_input = """
 
 
 def test_blink():
-    assert blink(125) == [253000]
-    assert blink(17) == [1, 7]
-    assert blink(0) == [1]
+    assert blink(125) == (253000,)
+    assert blink(17) == (1, 7)
+    assert blink(0) == (1,)
 
 
 def test_count_stones():
