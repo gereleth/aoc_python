@@ -99,7 +99,7 @@ Animations made with py5. I'm adding videos to this [youtube playlist](https://w
         </td>
         <td>
         <h4><a href="src/year2024/day09vis.py">Day 9</a></h4>
-            (needs upload)
+            <a href="https://youtu.be/ioMh6Ir7ZZs" target="_blank" rel="noopener"><img src="outputs/2024-day09-disk-fragmenter.png" height="135" width="240"></a>
         </td>
     </tr>
     <tr>
