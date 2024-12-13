@@ -11,6 +11,7 @@ class GardenRegion:
         self.c = c
         self.letter = letter
         self.plots = set([(r, c)])
+        self.borders = defaultdict(list)
 
     @property
     def area(self):
@@ -18,25 +19,12 @@ class GardenRegion:
 
     @property
     def perimeter(self):
-        p = 0
-        for r, c in self.plots:
-            for dr, dc in Farm.DIRECTIONS:
-                if (r + dr, c + dc) not in self.plots:
-                    p += 1
-        return p
+        return sum(len(b) for b in self.borders.values())
 
     @property
     def sides(self):
-        s = defaultdict(list)
-        for r, c in self.plots:
-            for dr, dc in Farm.DIRECTIONS:
-                if (r + dr, c + dc) not in self.plots:
-                    if dc != 0:
-                        s[("c", c, dc)].append(r)
-                    else:
-                        s[("r", r, dr)].append(c)
         sides = 0
-        for _, ys in s.items():
+        for _, ys in self.borders.items():
             ys.sort()
             sides += 1 + sum(b - a > 1 for a, b in zip(ys[:-1], ys[1:]))
         return sides
@@ -58,6 +46,7 @@ class Farm:
     def iter_neighbours(self, r, c):
         for dr, dc in self.DIRECTIONS:
             if r + dr >= self.R or r + dr < 0 or c + dc >= self.C or c + dc < 0:
+                yield (r + dr, c + dc, None)
                 continue
             next_letter = self.lines[r + dr][c + dc]
             yield (r + dr, c + dc, next_letter)
@@ -72,14 +61,19 @@ class Farm:
             to_explore = set([(r, c)])
             while len(to_explore) > 0:
                 rg, cg = to_explore.pop()
+                done.add((rg, cg))
                 for rn, cn, ln in self.iter_neighbours(rg, cg):
-                    if ln != region.letter:
-                        continue
                     if (rn, cn) in region.plots:
+                        continue
+                    if ln != region.letter:
+                        # save region's outer border locations
+                        if rn == rg:
+                            region.borders[("c", cg, cn - cg)].append(rg)
+                        else:
+                            region.borders[("r", rg, rn - rg)].append(cg)
                         continue
                     region.plots.add((rn, cn))
                     to_explore.add((rn, cn))
-                    done.add((rn, cn))
 
 
 def part1(text_input: str) -> int:

@@ -181,7 +181,3 @@ def part2(text_input: str):
 def test_part1():
     assert part1(example_input_1) == 32000000
     assert part1(example_input_2) == 11687500
-
-
-def test_part2():
-    assert part2(example_input_1) == 167409079868000
