@@ -77,22 +77,23 @@ class BigWarehouse:
     def maybe_move_vertical(self, movechar):
         dr, _ = movechars_dr_dc[movechar]
         # collect boxes to push
+        # offsets are column offsets of what's moving at each row
         offsets = [set([0])]
         r, c0 = self.r0, self.c0
         decided = False
         while not decided:
             r = r + dr
-            # check for walls ahead
-            for offset in offsets[-1]:
-                if self.lines[r][c0 + offset] == "#":
-                    return
-            # check for boxes ahead
+            # check for walls or boxes ahead
             new_offsets = set()
             for offset in offsets[-1]:
-                if self.lines[r][c0 + offset] == "[":
+                char = self.lines[r][c0 + offset]
+                if char == "#":
+                    # wall, can't move
+                    return
+                elif char == "[":
                     new_offsets.add(offset)
                     new_offsets.add(offset + 1)
-                elif self.lines[r][c0 + offset] == "]":
+                elif char == "]":
                     new_offsets.add(offset)
                     new_offsets.add(offset - 1)
             # no new boxes, we can move
