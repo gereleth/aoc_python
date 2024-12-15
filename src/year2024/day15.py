@@ -80,8 +80,7 @@ class BigWarehouse:
         # offsets are column offsets of what's moving at each row
         offsets = [set([0])]
         r, c0 = self.r0, self.c0
-        decided = False
-        while not decided:
+        while True:
             r = r + dr
             # check for walls or boxes ahead
             new_offsets = set()
@@ -98,7 +97,6 @@ class BigWarehouse:
                     new_offsets.add(offset - 1)
             # no new boxes, we can move
             if len(new_offsets) == 0:
-                decided = True
                 break
             # else we are undecided and continue the while loop
             offsets.append(new_offsets)
