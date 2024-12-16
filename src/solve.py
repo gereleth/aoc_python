@@ -46,12 +46,13 @@ def run_day(year, day, input_path=None, submit_answer=0):
     print(f"Part 1: {answer1} ({t1-t0:.3f} s)")
     if submit_answer == 1:
         submit(answer1, part="a", day=day, year=year)
-    answer2 = solution.part2(content)
     t2 = time.perf_counter()
-    print(f"Part 2: {answer2} ({t2-t1:.3f} s)")
+    answer2 = solution.part2(content)
+    t3 = time.perf_counter()
+    print(f"Part 2: {answer2} ({t3-t2:.3f} s)")
     if submit_answer == 2:
         submit(answer2, part="b", day=day, year=year)
-    return solution.day_title, (answer1, t1 - t0), (answer2, t2 - t0)
+    return solution.day_title, (answer1, t1 - t0), (answer2, t3 - t2)
 
 
 if __name__ == "__main__":
@@ -72,7 +73,10 @@ if __name__ == "__main__":
             days = [args.day]
         else:
             days = range(1, 26)
+        time_total = 0
         for day in days:
             day_title, *ans_times = run_day(
                 year, day, input_path=args.input, submit_answer=args.submit
             )
+            time_total += sum(at[1] for at in ans_times)
+        print(f"Total time: {time_total:.3f}s")
