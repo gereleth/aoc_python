@@ -6,9 +6,7 @@ day_title = "Chronospatial Computer"
 
 
 def part1(text_input: str) -> str:
-    registers, program = text_input.split("\n\n")
-    a, b, c = map(int, re.findall(r"(\d+)", registers))
-    program = list(map(int, program.split()[1].split(",")))
+    a, b, c, *program = map(int, re.findall(r"(\d+)", text_input))
     # print(a, b, c)
     # print(program)
     i = 0
@@ -19,44 +17,27 @@ def part1(text_input: str) -> str:
         opcode = program[i]
         operand = program[i + 1]
 
-        combo = -1
-        if operand <= 3:
-            combo = operand
-        else:
-            combo = [a, b, c][operand - 4]
+        combo = operand if operand <= 3 else [a, b, c][operand - 4]
 
         if opcode == 0:
-            numerator = a
-            denominator = 2**combo
-            a = numerator // denominator
-            i += 2
+            a = a // 2**combo
         elif opcode == 1:
             b = b ^ operand
-            i += 2
         elif opcode == 2:
             b = combo % 8
-            i += 2
         elif opcode == 3:
-            if a == 0:
-                i += 2
-            else:
+            if a > 0:
                 i = operand
+                continue
         elif opcode == 4:
             b = b ^ c
-            i += 2
         elif opcode == 5:
             res.append(combo % 8)
-            i += 2
         elif opcode == 6:
-            numerator = a
-            denominator = 2**combo
-            b = numerator // denominator
-            i += 2
+            b = a // 2**combo
         elif opcode == 7:
-            numerator = a
-            denominator = 2**combo
-            c = numerator // denominator
-            i += 2
+            c = a // 2**combo
+        i += 2
     return ",".join(map(str, res))
 
 
@@ -66,9 +47,9 @@ def part1(text_input: str) -> str:
 # It ends when a becomes 0.
 # Values of b and c get overwritten in every iteration
 # so whatever they start with doesn't matter.
-# At the last iteration starting value of a is a0 = 0..7
+# At the last iteration starting value of a is a0 = 1..7
 # (because a0 // 8 == 0)
-# Use part1 code to check which numbers from 0..7 produce the correct last digit of the program
+# Use part1 code to check which numbers from 1..7 produce the correct last digit of the program
 # At the iteration before that it's a1 = 8*a0 + (0..7)
 # (because a1 // 8 == a0)
 # And before that it's a2 = 8*a1 + (0..7)
@@ -82,22 +63,22 @@ def part2(text_input: str) -> int:
     a0 = re.findall(r"(\d+)", registers)[0]
     program = program.split()[1]
 
-    base = set([0])
-    totals = set()
-    while base:
-        new_base = set()
-        for value in base:
-            for ai in range(8):
-                a = value * 8 + ai
+    a_i = set([0])
+    answers = set()
+    while a_i:
+        a_iplus1 = set()
+        for value in a_i:
+            for remainder in range(8):
+                a = value * 8 + remainder
                 res = part1(text_input.replace(a0, str(a)))
                 if program == res:
-                    totals.add(a)
+                    answers.add(a)
                     # print(f"{a} => {res} ***")
                 elif program[-len(res) :] == res and a > value:
                     # print(f"{a} => {res}")
-                    new_base.add(a)
-        base = new_base
-    return min(totals)
+                    a_iplus1.add(a)
+        a_i = a_iplus1
+    return min(answers)
 
 
 test_input = """
