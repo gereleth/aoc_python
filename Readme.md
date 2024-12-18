@@ -107,9 +107,39 @@ Animations made with py5. I'm adding videos to this [youtube playlist](https://w
             <h4><a href="src/year2024/day10vis.py">Day 10</a></h4>
             <a href="https://youtu.be/2kjX5DxUANc" target="_blank" rel="noopener"><img src="outputs/2024-day10-hoof-it.png" height="135" width="240"></a>
         </td>
-        <td>  
+        <td>
+            Day 11
         </td>
         <td>
+            Day 12
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Day 13
+        </td>
+        </td>
+        <td>
+            <h4><a href="src/year2024/day14vis.py">Day 14</a></h4>
+            (needs upload)
+        </td>
+        <td>
+            <h4><a href="src/year2024/day15vis.py">Day 15</a></h4>
+            (needs upload)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="src/year2024/day16vis.py">Day 16</a></h4>
+            (needs upload)
+        </td>
+        </td>
+        <td>
+            Day 17
+        </td>
+        <td>
+            <h4><a href="src/year2024/day18vis.py">Day 18</a></h4>
+            (needs upload)
         </td>
     </tr>
 </table>
