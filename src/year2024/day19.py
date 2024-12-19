@@ -1,53 +1,59 @@
 # Problem statement: https://adventofcode.com/2024/day/19
 
-from functools import cache
+from collections import Counter, defaultdict
 
 day_title = "Linen Layout"
 
 
 def parse_input(text_input: str):
+    # index towels by their first letter to limit iterations we need to do later
+    # some kind of tree could be even better maybe?
     towels, designs = text_input.split("\n\n")
     towels = towels.split(", ")
+    towels_index = defaultdict(list)
+    for towel in towels:
+        towels_index[towel[0]].append(towel)
     designs = designs.split()
-    return towels, designs
+    return towels_index, designs
 
 
 def part1(text_input: str) -> int:
-    towels, designs = parse_input(text_input)
+    towels_index, designs = parse_input(text_input)
     total = 0
-
-    @cache
-    def can_make_design(design):
-        for towel in towels:
-            if towel == design:
-                return True
-            elif towel == design[: len(towel)]:
-                can_do = can_make_design(design[len(towel) :])
-                if can_do:
-                    return True
-        return False
-
+    # canmake is a dict like {design: can we make it}
+    canmake = defaultdict(bool)
+    canmake[""] = True
     for design in designs:
-        total += can_make_design(design)
+        # iterate though design backwards
+        for i in range(1, len(design) + 1):
+            tail = design[-i:]
+            if tail in canmake:
+                continue
+            # see if `tail` is `some_towel + rest` where we can make `rest`
+            for towel in towels_index[tail[0]]:
+                if tail.startswith(towel) and canmake[tail[len(towel) :]]:
+                    canmake[tail] = True
+                    break
+        total += canmake[design]
     return total
 
 
 def part2(text_input: str) -> int:
-    towels, designs = parse_input(text_input)
+    towels_index, designs = parse_input(text_input)
     total = 0
 
-    @cache
-    def count_ways_to_make_design(design):
-        total = 0
-        for towel in towels:
-            if towel == design:
-                total += 1
-            elif towel == design[: len(towel)]:
-                total += count_ways_to_make_design(design[len(towel) :])
-        return total
-
+    ways = Counter()
+    ways[""] = 1
+    # same as part1 but collect counts and can't break early
     for design in designs:
-        total += count_ways_to_make_design(design)
+        for i in range(1, len(design) + 1):
+            tail = design[-i:]
+            if tail in ways:
+                continue
+            for towel in towels_index[tail[0]]:
+                if tail.startswith(towel):
+                    ways[tail] += ways[tail[len(towel) :]]
+        total += ways[design]
     return total
 
 
