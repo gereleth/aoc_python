@@ -1,4 +1,4 @@
-# Problem statement: https://adventofcode.com/2024/day/16
+# Problem statement: https://adventofcode.com/2024/day/18
 
 from py5 import Sketch  # , Py5Font
 from aocd import data
