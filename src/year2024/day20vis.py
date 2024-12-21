@@ -5,7 +5,6 @@ from aocd import data
 from .day20 import day_title, RaceConditionMaze
 from statemachine import StateMachine, State
 from matplotlib import colormaps
-from math import inf
 import numpy as np
 from itertools import islice, cycle
 
@@ -66,6 +65,7 @@ class VisMachine(StateMachine):
     path_done = False
     tiles_buffer = []
     silver_gains_buffer = []
+    gold_gains_buffer = []
     # animation stages
 
     init = State(initial=True)
@@ -96,19 +96,52 @@ class VisMachine(StateMachine):
     silver_scan = State()
 
     def on_enter_silver_scan(self):
-        self.duration = 3
-        point = self.path[self.path_index]
-        self.silver_gains_buffer.extend(
-            self.maze.cheat_gains_point(point, cheat_steps=20, min_gain=100)
-        )
-        self.path_index += 1
-        self.path_done = self.path_index == len(self.path)
+        self.duration = 2
+        self.items_per_frame = 1 if self.path_index < 100 else 100
+        for _ in range(self.items_per_frame):
+            point = self.path[self.path_index]
+            self.silver_gains_buffer.extend(
+                self.maze.cheat_gains_point(point, cheat_steps=2, min_gain=100)
+            )
+            self.path_index += 1
+            self.path_done = self.path_index == len(self.path)
+            if self.path_done:
+                self.path_index = 0
+                break
 
     transition |= begin_silver_scan.to(silver_scan)
     transition |= silver_scan.to.itself(unless="path_done")
+
+    begin_gold_scan = State()
+    transition |= silver_scan.to(begin_gold_scan, cond="path_done")
+
+    def on_enter_begin_gold_scan(self):
+        self.duration = 0
+        self.path_index = 0
+        self.path_done = False
+
+    gold_scan = State()
+    transition |= begin_gold_scan.to(gold_scan)
+    transition |= gold_scan.to.itself(unless="path_done")
+
+    def on_enter_gold_scan(self):
+        self.duration = 1
+        self.items_per_frame = 1 if data.path_index < 100 else 2
+        data.gold_gains_buffer.clear()
+        for _ in range(self.items_per_frame):
+            point = self.path[self.path_index]
+            self.gold_gains_buffer.extend(
+                self.maze.cheat_gains_point(point, cheat_steps=20, min_gain=100)
+            )
+            self.path_index += 1
+            self.path_done = self.path_index == len(self.path)
+            if self.path_done:
+                self.path_index = 0
+                break
+
     # finish animation
     end = State(final=True)
-    transition |= silver_scan.to(end, cond="path_done")
+    transition |= gold_scan.to(end, cond="path_done")
 
     # timer to change stages
     def tick(self):
@@ -248,18 +281,50 @@ class VisSketch(Sketch):
             self.fill(*SILVER)
             self.no_stroke()
             self.circle(x, y, W / 2)
+        elif data.current_state == VisMachine.gold_scan:
+            self.stroke(*GOLD)
+            contour = gold_contour
+            r, c = data.path[data.path_index]
+            x = PW + W * c
+            y = PH + W * r
+            self.begin_shape()
+            self.vertices(contour + np.array([x, y]))
+            self.end_shape()
+            self.fill(*GOLD)
+            self.no_stroke()
+            self.circle(x, y, W / 2)
         self.pop()
 
-    def draw_cheat_gains(self, gr=None):
+    def draw_cheat_gains_silver(self, gr=None):
         g = self if gr is None else gr
         g.push()
         g.no_fill()
         g.stroke(*SILVER)
-        g.stroke_weight(1)
+        g.stroke_weight(4)
         for gain, (r1, c1), (r2, c2) in data.silver_gains_buffer:
             g.line(PW + W * c1, PH + W * r1, PW + W * c2, PH + W * r2)
         g.pop()
         data.silver_gains_buffer.clear()
+
+    def draw_cheat_gains_gold(self, gr=None):
+        g = self if gr is None else gr
+        g.push()
+        g.no_fill()
+        g.stroke(*GOLD)
+        g.stroke_weight(1)
+        for gain, (r1, c1), (r2, c2) in data.gold_gains_buffer:
+            g.line(PW + W * c1, PH + W * r1, PW + W * c2, PH + W * r2)
+        g.pop()
+        # data.gold_gains_buffer.clear()
+
+    def draw_cheat_gains_gold_bg(self, gr=None):
+        g = self if gr is None else gr
+        g.push()
+        g.fill(*GOLD)
+        starts = set(p1 for g, p1, p2 in data.gold_gains_buffer)
+        for r, c in starts:
+            g.circle(PW + W * c, PH + W * r, W)
+        g.pop()
 
     def draw(self):
         data.tick()
@@ -272,6 +337,11 @@ class VisSketch(Sketch):
             self.draw_tiles(gr=background)
             background.end_draw()
         if data.silver_gains_buffer:
-            # background.begin_draw()
-            self.draw_cheat_gains(gr=self)
-            # background.end_draw()
+            background.begin_draw()
+            self.draw_cheat_gains_silver(gr=background)
+            background.end_draw()
+        if data.gold_gains_buffer:
+            background.begin_draw()
+            self.draw_cheat_gains_gold(gr=self)
+            self.draw_cheat_gains_gold_bg(gr=background)
+            background.end_draw()
