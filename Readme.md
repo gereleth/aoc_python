@@ -27,7 +27,7 @@ I also export `AOC_DATA` to put input files into a folder here.
 ```bash
 # env.sh
 export AOC_SESSION=cafef00db01dfaceba5eba11deadbeef
-export AOC_DATA=/path/to/this/folder/data
+export AOC_DATA=/path/to/this/folder/aocdata
 ```
 
 ## Usage
