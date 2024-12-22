@@ -1,4 +1,4 @@
-# Problem statement: https://adventofcode.com/2024/day/16
+# Problem statement: https://adventofcode.com/2024/day/20
 
 from py5 import Sketch  # , Py5Font
 from aocd import data
@@ -7,6 +7,7 @@ from statemachine import StateMachine, State
 from matplotlib import colormaps
 import numpy as np
 from itertools import islice, cycle
+from collections import Counter
 
 # print(Py5Font.list()) # list available fonts
 colormap_bright = colormaps.get("plasma")
@@ -50,7 +51,7 @@ class VisMaze(RaceConditionMaze):
 
 class VisMachine(StateMachine):
     # data fields
-    started = True
+    started = False
     ticks = 0
     duration = 0
     done = 1.0
@@ -76,7 +77,7 @@ class VisMachine(StateMachine):
 
     def on_enter_show_path(self):
         self.duration = 1
-        duration = 1
+        duration = 180
         items_per_frame = max(1, len(self.path) // duration)
         portion = self.path[self.path_index : self.path_index + items_per_frame]
         self.tiles_buffer.extend(portion)
@@ -89,15 +90,15 @@ class VisMachine(StateMachine):
     transition |= show_path.to(begin_silver_scan, cond="path_done")
 
     def on_enter_begin_silver_scan(self):
-        self.duration = 0
+        self.duration = 60
         self.path_index = 0
         self.path_done = False
 
     silver_scan = State()
 
     def on_enter_silver_scan(self):
-        self.duration = 2
-        self.items_per_frame = 1 if self.path_index < 100 else 100
+        self.duration = 1
+        self.items_per_frame = 1 if self.path_index < 200 else 100
         for _ in range(self.items_per_frame):
             point = self.path[self.path_index]
             self.silver_gains_buffer.extend(
@@ -116,7 +117,7 @@ class VisMachine(StateMachine):
     transition |= silver_scan.to(begin_gold_scan, cond="path_done")
 
     def on_enter_begin_gold_scan(self):
-        self.duration = 0
+        self.duration = 60
         self.path_index = 0
         self.path_done = False
 
@@ -126,7 +127,7 @@ class VisMachine(StateMachine):
 
     def on_enter_gold_scan(self):
         self.duration = 1
-        self.items_per_frame = 1 if data.path_index < 100 else 2
+        self.items_per_frame = 1 if self.path_index < 200 else 10
         data.gold_gains_buffer.clear()
         for _ in range(self.items_per_frame):
             point = self.path[self.path_index]
@@ -300,8 +301,14 @@ class VisSketch(Sketch):
         g.push()
         g.no_fill()
         g.stroke(*SILVER)
-        g.stroke_weight(4)
+        # g.stroke_weight(4)
         for gain, (r1, c1), (r2, c2) in data.silver_gains_buffer:
+            g.stroke(*SILVER)
+            g.stroke_weight(5)
+            g.line(PW + W * c1, PH + W * r1, PW + W * c2, PH + W * r2)
+            color = colormap_bright(gain * 4 / data.color_max_cost)
+            g.stroke(*(int(255 * i) for i in color))
+            g.stroke_weight(3)
             g.line(PW + W * c1, PH + W * r1, PW + W * c2, PH + W * r2)
         g.pop()
         data.silver_gains_buffer.clear()
@@ -312,7 +319,12 @@ class VisSketch(Sketch):
         g.no_fill()
         g.stroke(*GOLD)
         g.stroke_weight(1)
+        p1 = data.gold_gains_buffer[-1][1]
         for gain, (r1, c1), (r2, c2) in data.gold_gains_buffer:
+            if (r1, c1) != p1:
+                continue
+            # color = colormap_bright(gain * 2 / data.color_max_cost)
+            # g.stroke(*(int(255 * i) for i in color))
             g.line(PW + W * c1, PH + W * r1, PW + W * c2, PH + W * r2)
         g.pop()
         # data.gold_gains_buffer.clear()
@@ -321,17 +333,19 @@ class VisSketch(Sketch):
         g = self if gr is None else gr
         g.push()
         g.fill(*GOLD)
-        starts = set(p1 for g, p1, p2 in data.gold_gains_buffer)
-        for r, c in starts:
-            g.circle(PW + W * c, PH + W * r, W)
+        starts = Counter()
+        for gain, p1, p2 in data.gold_gains_buffer:
+            starts[p1] += gain
+        for (r, c), sum_gain in starts.items():
+            color = colormap_bright(sum_gain / (20 * data.color_max_cost))
+            g.fill(*(int(255 * i) for i in color))
+            g.circle(PW + W * c, PH + W * r, 0.3 * np.log10(sum_gain) * W)
         g.pop()
 
     def draw(self):
         data.tick()
         self.image(background, 0, 0)
-        # self.draw_route()
         # self.draw_totals()
-        self.draw_scan_contour()
         if data.tiles_buffer:
             background.begin_draw()
             self.draw_tiles(gr=background)
@@ -345,3 +359,4 @@ class VisSketch(Sketch):
             self.draw_cheat_gains_gold(gr=self)
             self.draw_cheat_gains_gold_bg(gr=background)
             background.end_draw()
+        self.draw_scan_contour()
