@@ -48,6 +48,14 @@ class VisMaze(RaceConditionMaze):
                 if gain >= min_gain:
                     yield gain, (r0, c0), pos
 
+    def collect_path(self):
+        self.distance_from_start = {
+            pos: int(elem)
+            for pos, elem in np.ndenumerate(self.distance)
+            if not np.isnan(elem)
+        }
+        return self
+
 
 class VisMachine(StateMachine):
     # data fields
@@ -59,7 +67,7 @@ class VisMachine(StateMachine):
     total_2 = 0
     is_finished = False
     # animation data
-    maze = VisMaze(text)
+    maze = VisMaze(text).collect_path()
     path = sorted(maze.distance_from_start, key=maze.distance_from_start.get)
     path_index = 0
     color_max_cost = 1.2 * maze.no_cheat_cost
