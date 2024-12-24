@@ -68,8 +68,8 @@ def find_swaps(gates: str):
     try:
         # Basically construct a correct binary addition contraption from logic gates
         # And see where it differs from what we're given
-        # I learned the structure from studying the Graphviz representation
-        # of the calculations graph
+        # I learned the structure from studying the calculations graph
+        # rendered with Graphviz
         xor00 = find_gate("x00", XOR, "y00")
         if xor00 != "z00":
             return xor00, "z00"
@@ -78,7 +78,7 @@ def find_swaps(gates: str):
         zxor_i = find_gate(and00, XOR, xor01)
         and01 = find_gate("x01", AND, "y01")
         if zxor_i != "z01":
-            return xor01, "z01"
+            return zxor_i, "z01"
         carry_and = find_gate(and00, AND, xor01)
         carry_or = find_gate(and01, OR, carry_and)
         for i in range(2, 45):
@@ -96,7 +96,8 @@ def find_swaps(gates: str):
 def part2(text_input: str) -> int:
     _, gates = text_input.split("\n\n")
     swaps = {}
-    while len(swaps) < 4:
+    for _ in range(4):
+        # Find one swap at a time, fix it in the input text and go again
         a, b = find_swaps(gates)
         gates = gates.replace(f"-> {a}", "-> ???")
         gates = gates.replace(f"-> {b}", f"-> {a}")
