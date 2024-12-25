@@ -33,14 +33,23 @@ def run_day(year, day):
     solution = import_module(f"year{year}.day{day:02d}")
     print(f"--- Year {year} Day {day}: {solution.day_title} ---")
     content = get_data(year=year, day=day, block=True)
-    t0 = time.perf_counter()
-    answer1 = solution.part1(content)
-    t1 = time.perf_counter()
-    print(f"Part 1: {answer1} ({t1-t0:.3f} s)")
-    answer2 = solution.part2(content)
-    t2 = time.perf_counter()
-    print(f"Part 2: {answer2} ({t2-t1:.3f} s)")
-    return solution.day_title, (answer1, t1 - t0), (answer2, t2 - t1)
+    times1 = []
+    for _ in range(5):
+        t0 = time.perf_counter()
+        answer1 = solution.part1(content)
+        t1 = time.perf_counter()
+        times1.append(t1 - t0)
+    median_time_1 = sorted(times1)[len(times1) // 2]
+    print(f"Part 1: {answer1} ({sorted(times1)[len(times1)//2]:.3f} s)")
+    times2 = []
+    for _ in range(5):
+        t2 = time.perf_counter()
+        answer2 = solution.part2(content)
+        t3 = time.perf_counter()
+        times2.append(t3 - t2)
+    median_time_2 = sorted(times2)[len(times2) // 2]
+    print(f"Part 2: {answer2} ({median_time_2:.3f} s)")
+    return solution.day_title, (answer1, median_time_1), (answer2, median_time_2)
 
 
 if __name__ == "__main__":
@@ -54,9 +63,13 @@ if __name__ == "__main__":
         res = []
         days = range(1, 26)
         for day in days:
-            day_title, *ans_times = run_day(args.year, day)
-            for i, (answer, t) in enumerate(ans_times):
-                res.append(dict(day=day, title=day_title, part=i + 1, time=t))
+            try:
+                day_title, *ans_times = run_day(args.year, day)
+                for i, (answer, t) in enumerate(ans_times):
+                    res.append(dict(day=day, title=day_title, part=i + 1, time=t))
+            except ModuleNotFoundError:
+                res.append(dict(day=day, title="?", part=1, time=None))
+                res.append(dict(day=day, title="?", part=2, time=None))
         res = (
             pd.DataFrame(res)
             .set_index(["day", "title", "part"])["time"]
@@ -92,3 +105,5 @@ if __name__ == "__main__":
     ax.figure.set_size_inches(9, 9)
     ax.figure.tight_layout()
     ax.figure.savefig(path / f"{args.year}.png")
+    total_ms = res.part_1_ms.sum() + res.part_2_ms.sum()
+    print(f"Total time: {total_ms:.0f} ms")
