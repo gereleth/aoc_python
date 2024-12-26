@@ -206,7 +206,9 @@ class VisSketch(Sketch):
 
     def mouse_clicked(self):
         data.started = not data.started
-        # self.save_frame(f"image{self.frame_count:03d}.png")
+        if data.started:
+            title = "-".join(day_title.lower().split())
+            self.save_frame(f"2024-day14-{title}-{self.frame_count:03d}.png")
 
     def draw_robots(self, t):
         self.push()

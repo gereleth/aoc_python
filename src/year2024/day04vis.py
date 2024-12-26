@@ -132,8 +132,12 @@ class VisSketch(Sketch):
 
     def mouse_clicked(self):
         global started, start_frame
-        started = True
-        start_frame = self.frame_count
+        if not started:
+            started = True
+            start_frame = self.frame_count
+        else:
+            title = "-".join(day_title.lower().split())
+            self.save_frame(f"day04-{title}-{self.frame_count}.png")
 
     def calc_stage(self):
         if started:

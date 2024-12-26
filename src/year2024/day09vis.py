@@ -215,7 +215,10 @@ class VisSketch(Sketch):
         data.add_listener(self)
 
     def mouse_clicked(self):
-        data.started = True
+        if data.started:
+            title = "-".join(s.lower() for s in day_title.split())
+            self.save_frame(f"outputs/2024-day09-{title}-{self.frame_count}.png")
+        data.started = not data.started
 
     def draw_one_file(self, file_id, index, size, part=1, erase=False):
         if not erase:

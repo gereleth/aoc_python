@@ -73,20 +73,20 @@ Animations made with py5. I'm adding videos to this [youtube playlist](https://w
         </td>
         <td>
             <h4><a href="src/year2024/day03vis.py">Day 3</a></h4>
-            (needs upload)
+            <a href="https://youtu.be/7X_3jsKQ6VE" target="_blank" rel="noopener"><img src="outputs/2024-day03-mull-it-over.png" height="135" width="240"></a>
         </td>
     </tr>
     <tr>
         <td>
             <h4><a href="src/year2024/day04vis.py">Day 4</a></h4>
-            (needs upload)
+            <a href="https://youtu.be/aoKJg7RvYlk" target="_blank" rel="noopener"><img src="outputs/2024-day04-ceres-search.png" height="135" width="240"></a>
         </td>
         <td>        
             Day 5
         </td>
         <td>
             <h4><a href="src/year2024/day06vis.py">Day 6</a></h4>
-            (needs upload)
+            <a href="https://youtu.be/Rg_eClLZxY4" target="_blank" rel="noopener"><img src="outputs/2024-day06-guard-gallivant.png" height="135" width="240"></a>
         </td>
     </tr>
     <tr>
@@ -121,11 +121,11 @@ Animations made with py5. I'm adding videos to this [youtube playlist](https://w
         </td>
         <td>
             <h4><a href="src/year2024/day14vis.py">Day 14</a></h4>
-            (needs upload)
+            <a href="https://youtu.be/zjx1exR2sw0" target="_blank" rel="noopener"><img src="outputs/2024-day14-restroom-redoubt.png" height="135" width="240"></a>
         </td>
         <td>
             <h4><a href="src/year2024/day15vis.py">Day 15</a></h4>
-            (needs upload)
+            <a href="https://youtu.be/Z5ljbucUiwg" target="_blank" rel="noopener"><img src="outputs/2024-day15-warehouse-woes.png" height="135" width="240"></a>
         </td>
     </tr>
     <tr>

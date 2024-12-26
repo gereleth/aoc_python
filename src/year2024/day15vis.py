@@ -173,9 +173,10 @@ class VisSketch(Sketch):
         background.end_draw()
 
     def mouse_clicked(self):
+        if data.started:
+            title = "-".join(day_title.lower().split())
+            self.save_frame(f"2024-day15-{title}-{self.frame_count:03d}.png")
         data.started = not data.started
-        pass
-        # self.save_frame(f"image{self.frame_count:03d}.png")
 
     def draw_walls(self, gr=None, stage=1):
         g = self if gr is None else gr
