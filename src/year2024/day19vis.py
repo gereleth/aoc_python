@@ -130,9 +130,10 @@ class VisSketch(Sketch):
         data.add_listener(self)
 
     def mouse_clicked(self):
+        if data.started:
+            title = "-".join(day_title.lower().split())
+            self.save_frame(f"2024-day19-{title}-{self.frame_count:03d}.png")
         data.started = not data.started
-        # pass
-        # self.save_frame(f"image{self.frame_count:03d}.png")
 
     def draw_design(self):
         self.push()

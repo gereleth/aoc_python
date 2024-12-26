@@ -131,7 +131,7 @@ Animations made with py5. I'm adding videos to this [youtube playlist](https://w
     <tr>
         <td>
             <h4><a href="src/year2024/day16vis.py">Day 16</a></h4>
-            (needs upload)
+            <a href="https://youtu.be/3BOUY2gYutw" target="_blank" rel="noopener"><img src="outputs/2024-day16-reindeer-maze.png" height="135" width="240"></a>
         </td>
         </td>
         <td>
@@ -139,7 +139,22 @@ Animations made with py5. I'm adding videos to this [youtube playlist](https://w
         </td>
         <td>
             <h4><a href="src/year2024/day18vis.py">Day 18</a></h4>
-            (needs upload)
+            <a href="https://youtu.be/-BJvVBGw-f8" target="_blank" rel="noopener"><img src="outputs/2024-day18-ram-run.png" height="135" width="240"></a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h4><a href="src/year2024/day19vis.py">Day 19</a></h4>
+            <a href="https://youtu.be/6vA5dRSIT6g" target="_blank" rel="noopener"><img src="outputs/2024-day19-linen-layout.png" height="135" width="240"></a>
+        </td>
+        </td>
+        <td>
+            <h4><a href="src/year2024/day20vis.py">Day 20</a></h4>
+            <a href="https://youtu.be/JJnxLELY-GU" target="_blank" rel="noopener"><img src="outputs/2024-day20-race-condition.png" height="135" width="240"></a>
+        </td>
+        <td>
+            <h4><a href="src/year2024/day21vis.py">Day 21</a></h4>
+            <a href="https://youtu.be/p693LIxqGTw" target="_blank" rel="noopener"><img src="outputs/2024-day21-keypad-conundrum.png" height="135" width="240"></a>
         </td>
     </tr>
 </table>
