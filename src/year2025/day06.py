@@ -1,5 +1,7 @@
 # Problem statement: https://adventofcode.com/2025/day/6
 
+from functools import reduce
+
 day_title = "Trash Compactor"
 
 
@@ -12,10 +14,7 @@ def part1(text_input: str) -> int:
         if sign == "+":
             total += sum(int(p) for p in problem)
         elif sign == "*":
-            product = 1
-            for p in problem:
-                product *= int(p)
-            total += product
+            total += reduce(lambda x, y: x * y, (int(p) for p in problem))
     return total
 
 
@@ -33,10 +32,7 @@ def part2(text_input: str) -> int:
             total += sum(numbers)
             numbers.clear()
         elif sign == "*":
-            product = 1
-            for n in numbers:
-                product *= n
-            total += product
+            total += reduce(lambda x, y: x * y, numbers)
             numbers.clear()
     return total
 
