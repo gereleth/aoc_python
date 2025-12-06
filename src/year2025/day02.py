@@ -1,6 +1,7 @@
 # Problem statement: https://adventofcode.com/2025/day/2
 
 import re
+import heapq
 
 day_title = "Gift Shop"
 
@@ -89,13 +90,15 @@ def invalid_ids_gen(repeats=2):
 # (for example, 222222 is both '22'*3 and '222'*2)
 def merge_gen(generators):
     iterators = [iter(gen) for gen in generators]
-    current_values = [next(it) for it in iterators]
+    values = [(next(it), i) for i, it in enumerate(iterators)]
+    heapq.heapify(values)
+    last_yielded = None
     while True:
-        min_value = min(current_values)
-        yield min_value
-        for i, value in enumerate(current_values):
-            if value == min_value:
-                current_values[i] = next(iterators[i])
+        value, index = heapq.heappop(values)
+        if value != last_yielded:
+            yield value
+            last_yielded = value
+        heapq.heappush(values, (next(iterators[index]), index))
 
 
 def part1_generators(text_input: str) -> int:
