@@ -7,18 +7,17 @@ day_title = "Reactor"
 
 
 def make_path_counter(text_input: str):
-    leads_to = defaultdict(set)
+    edges = defaultdict(set)
 
     for line in text_input.split("\n"):
         a, bs = line.split(": ")
-        for b in bs.split():
-            leads_to[b].add(a)
+        edges[a].update(bs.split())
 
     @cache
     def count_paths(start, finish):
         total = 0
-        for previous in leads_to[finish]:
-            total += 1 if start == previous else count_paths(start, previous)
+        for nxt in edges[start]:
+            total += 1 if nxt == finish else count_paths(nxt, finish)
         return total
 
     return count_paths
