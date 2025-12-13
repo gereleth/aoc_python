@@ -1,6 +1,6 @@
 # Problem statement: https://adventofcode.com/2025/day/6
 
-from functools import reduce
+from math import prod
 
 day_title = "Trash Compactor"
 
@@ -14,7 +14,7 @@ def part1(text_input: str) -> int:
         if sign == "+":
             total += sum(int(p) for p in problem)
         elif sign == "*":
-            total += reduce(lambda x, y: x * y, (int(p) for p in problem))
+            total += prod(int(p) for p in problem)
     return total
 
 
@@ -32,7 +32,7 @@ def part2(text_input: str) -> int:
             total += sum(numbers)
             numbers.clear()
         elif sign == "*":
-            total += reduce(lambda x, y: x * y, numbers)
+            total += prod(numbers)
             numbers.clear()
     return total
 
