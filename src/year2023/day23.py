@@ -121,7 +121,7 @@ class HikingArea:
                 next_node_id += 1
                 path = ""
                 edge_direction = 0
-            for pos in can_move:
+            for pos in sorted(can_move):
                 r, c, direction, edge_direction = pos
                 queue.append(((r, c), from_node, path + direction, edge_direction))
 
