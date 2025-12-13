@@ -1,11 +1,9 @@
 # Problem statement: https://adventofcode.com/2025/day/4
 
-from typing import Set
-
 day_title = "Printing Department"
 
 
-def parse_input(text_input: str) -> Set[tuple[int, int]]:
+def parse_input(text_input: str) -> set[tuple[int, int]]:
     lines = text_input.split()
     grid = set()
     for r, line in enumerate(lines):

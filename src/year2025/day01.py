@@ -1,12 +1,9 @@
 # Problem statement: https://adventofcode.com/2025/day/1
 
-from typing import List
-import random
-
 day_title = "Secret Entrance"
 
 
-def parse_input(text_input: str) -> List[int]:
+def parse_input(text_input: str) -> list[int]:
     rotations = text_input.split()
     numeric_rotations = [int(r[1:]) * (1 if r[0] == "R" else -1) for r in rotations]
     return numeric_rotations

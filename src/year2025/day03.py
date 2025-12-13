@@ -1,11 +1,9 @@
 # Problem statement: https://adventofcode.com/2025/day/3
 
-from typing import List
-
 day_title = "Lobby"
 
 
-def max_number_from_digits(digits: List[int], count: int) -> int:
+def max_number_from_digits(digits: list[int], count: int) -> int:
     N = len(digits)
     number = 0
     start = 0
