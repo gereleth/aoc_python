@@ -40,7 +40,7 @@ def run_day(year, day):
         t1 = time.perf_counter()
         times1.append(t1 - t0)
     median_time_1 = sorted(times1)[len(times1) // 2]
-    print(f"Part 1: {answer1} ({sorted(times1)[len(times1)//2]:.3f} s)")
+    print(f"Part 1: {answer1} ({sorted(times1)[len(times1) // 2]:.3f} s)")
     times2 = []
     for _ in range(5):
         t2 = time.perf_counter()
@@ -61,7 +61,8 @@ if __name__ == "__main__":
 
     if args.rerun:
         res = []
-        days = range(1, 26)
+        N = 12 if args.year >= 2025 else 25
+        days = range(1, N + 1)
         for day in days:
             try:
                 day_title, *ans_times = run_day(args.year, day)
